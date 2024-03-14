@@ -1,5 +1,4 @@
 // import { useEffect, useState } from "react";
-
 const FormProject = () => {
   //{ type = "insert", project = {}}
   // const PostForm = () => {
@@ -101,7 +100,6 @@ const FormProject = () => {
             name="floating_password"
             id="floating_password"
             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-            className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
             placeholder=" "
             required
             // event={handleInputChange}
@@ -131,7 +129,6 @@ const FormProject = () => {
           </label>
         </div>
         <div className="relative z-0 w-full mb-5 group">
-        <div className="relative z-0 w-full mb-5 group">
           <input
             type="email"
             name="contact_email"
@@ -155,7 +152,6 @@ const FormProject = () => {
             name="description"
             id="description"
             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-            className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
             placeholder=" "
             required
             // event={handleInputChange}
@@ -175,7 +171,6 @@ const FormProject = () => {
               name="floating_first_name"
               id="floating_first_name"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
               required
               // event={handleInputChange}
@@ -188,13 +183,11 @@ const FormProject = () => {
             </label>
           </div>
           <div className="relative z-0 w-full mb-5 group">
-          <div className="relative z-0 w-full mb-5 group">
             <input
               type="text"
               name="status"
               id="status"
               value="Pending"
-              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
               required
@@ -215,7 +208,6 @@ const FormProject = () => {
               name="time_start"
               id="time_start"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
               required
               // event={handleInputChange}
@@ -228,12 +220,10 @@ const FormProject = () => {
             </label>
           </div>
           <div className="relative z-0 w-full mb-5 group">
-          <div className="relative z-0 w-full mb-5 group">
             <input
               type="date"
               name="end_time"
               id="end_time"
-              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
               required
@@ -249,12 +239,10 @@ const FormProject = () => {
         </div>
 
         <div className="relative z-0 w-full mb-5 group">
-        <div className="relative z-0 w-full mb-5 group">
           <input
             type="file"
             name="thumbnail"
             id="thumbnail"
-            className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
             placeholder=" "
             required
@@ -271,7 +259,6 @@ const FormProject = () => {
         <div className="flex flex-row-reverse space-x-4 space-x-reverse">
           <button
             type="submit"
-            className="text-black border-2 shadow-lg hover:bg-red-800 hover:text-white font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-red-800 dark:focus:ring-blue-800"
             className="text-black border-2 shadow-lg hover:bg-red-800 hover:text-white font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-red-800 dark:focus:ring-blue-800"
           >
             Submit
