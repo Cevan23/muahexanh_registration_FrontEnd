@@ -2,10 +2,10 @@ import { Link } from "react-router-dom";
 
 export const ProjectItem = ({ activity }) => {
   return (
-    <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+    <tr className="odd:bg-white even:bg-gray-50 dark:border-gray-700">
       <th
         scope="row"
-        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrape"
       >
         {activity.title}
       </th>
@@ -13,10 +13,7 @@ export const ProjectItem = ({ activity }) => {
       <td className="px-6 py-4">{activity.members}</td>
       <td className="px-6 py-4">{activity.Status}</td>
       <td className="px-6 py-4">
-        <Link
-          to="/"
-          className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-        >
+        <Link to="/" className="font-medium text-blue-600 hover:underline">
           Edit
         </Link>
       </td>

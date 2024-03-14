@@ -3,18 +3,17 @@ import { Button } from "~/components/Button";
 // import axios from "~/api/axios";
 // import { useParams } from "react-router-dom";
 
-
 const ProjectDetail = () => {
-//   const [project, setProject] = useState();
-//   const [projectId] = useParams();
+  //   const [project, setProject] = useState();
+  //   const [projectId] = useParams();
 
-
-//   useEffect(() => {
-//     axios.get(`/api/projects/${projectId}`).then((res) => setProject(res.data));
-//   }, [projectId]);
+  //   useEffect(() => {
+  //     axios.get(`/api/projects/${projectId}`).then((res) => setProject(res.data));
+  //   }, [projectId]);
 
   return (
     <div>
+      {/* Header */}
       <div className="bg-[#c9c8c7]">
         <div className="flex justify-between items-center py-5 px-20">
           <div>
@@ -31,9 +30,11 @@ const ProjectDetail = () => {
           </div>
         </div>
       </div>
+
+      {/* Project detail */}
       <div className="px-20 py-10">
         <div className="text-4xl font-bold">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit 
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit
         </div>
         <div className="text-xl mt-6">
           Suspendisse pellentesque turpis sit amet ex laoreet, at vulputate
