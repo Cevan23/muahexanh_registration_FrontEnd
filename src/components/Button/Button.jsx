@@ -1,9 +1,8 @@
-const Button = ({ children, className, type }) => {
+const Button = ({ children, className }) => {
 
 
   const classes = {
     [className]: className,
-    [type]: type,
   };
 
   return (
