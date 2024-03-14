@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ProjectTable } from "./components/ProjectTable";
+import { ProjectTable } from "~/components";
 // import { Link } from "react-router-dom";
 
 const Project = () => {
