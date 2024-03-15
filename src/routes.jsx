@@ -1,5 +1,5 @@
 import { Login, Home } from "./pages";
-import { Project, ProjectDetail, FormProject } from "./pages/Project";
+import { Project, ProjectDetail, PostProject, UpdateProject } from "./pages/Project";
 import Register from "./pages/Register";
 import Info from "./pages/Project/components/Info/Info";
 
