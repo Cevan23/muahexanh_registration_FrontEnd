@@ -13,7 +13,7 @@ const Profile = () => {
     });
 
     useEffect(() => {
-        axios.get(`http://localhost:8082/api/students/${paths[2]}`).then(res => {
+        axios.get(`http://localhost:8082/api/students/${paths[1]}`).then(res => {
             console.log(res);
             setData({ ...res.data.data });
             console.log(res.data.message);

@@ -1,8 +1,10 @@
+import Header from "./Header";
 const DefaultLayout = ({ children }) => {
   return (
-    <div className="h-full w-full">
-      {children}
-    </div>
+    <>
+      <Header />
+      <div className="h-full w-full">{children}</div>
+    </>
   );
 };
 
