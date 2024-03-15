@@ -1,12 +1,12 @@
 import { Login, Home } from "./pages";
-import { Project, ProjectDetail, FormProject } from "./pages/Project";
+import { Project, ProjectDetail, PostProject, UpdateProject } from "./pages/Project";
 import Register from "./pages/Register";
-import Info from "./pages/Project/components/Info/Info";
+import Profile from "./pages/Project/components/Profile/Profile";
 
 const publicRoutes = [
   { path: "/register", component: Register, layout: null },
   { path: "/login", component: Login, layout: null },
-  { path: "/info/:id", component: Info },
+  { path: "/Profile/:id", component: Profile },
   { path: "/", component: Home },
   { path: "/community-leader", component: Project },
   { path: "/community-leader/:id", component: ProjectDetail },
