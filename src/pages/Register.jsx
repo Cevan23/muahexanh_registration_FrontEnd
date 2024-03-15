@@ -1,18 +1,66 @@
 import './radio_butt.css'
 import { useState, useEffect } from "react";
+import axios from "~/api/axios";
 
 const Register = () => {
+
+    const [Contact, setContact] = useState(
+        () => <div></div>
+    );
+
+    const [formDataMain, setFormDataMain] = useState({
+        email: "",
+        password: "",
+        full_name: "",
+        phone_number: "",
+        gender: "True",
+        role: ""
+    });
+
+    const [formDataSub, setFormDataSub] = useState();
+
+    function HandleChangeMainForm(event) {
+        const { value, name } = event.target;
+        setFormDataMain({
+            ...formDataMain,
+            [name]: value
+        });
+    }
+
     function Stu() {
+        const [formDat2, setFormDat2] = useState({
+            address: "",
+            university_name: "",
+            personal_description: "",
+        });
+
+        function HandleChangeSubForm(event) {
+            const { value, name, textContent } = event.target;
+            var temp = { ...formDat2 };
+            temp[name] = value;
+            if (textContent != 0)
+                temp['personal_description'] = textContent
+            setFormDat2(temp);
+            setFormDataSub(temp);
+        }
+
         return (<div className="flex flex-col items-center justify-center h-screen">
-            <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6">
-                <p>stu</p>
+            <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6 ring-1 ring-gray-200">
+                <form className="flex flex-col">
+                    <input className="bg-gray-100 text-gray-800 border-0 rounded-md p-2 mb-3" placeholder="Address" name="address" onChange={HandleChangeSubForm} />
+
+                    <input className="bg-gray-100 text-gray-800 border-0 rounded-md p-2 mb-3" placeholder="University_Name" name="university_name" onChange={HandleChangeSubForm} />
+
+                    <label className="text-sm mb-2 text-gray-900 cursor-pointer" htmlFor="Biography"> Biography </label>
+                    <div className="bg-gray-100 text-gray-800 border-0 rounded-md p-2 mb-3" placeholder="Biography" name='personal_description' contentEditable="true" onInput={HandleChangeSubForm} style={{ maxHeight: "320px", overflowY: 'auto' }} />
+                </form>
             </div>
         </div>);
     }
 
     function Uni() {
         return (<div className="flex flex-col items-center justify-center h-screen">
-            <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6">
+            <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6 ring-1 ring-gray-200">
                 <p>uni</p>
             </div>
         </div>);
@@ -20,65 +68,112 @@ const Register = () => {
 
     function Comn() {
         return (<div className="flex flex-col items-center justify-center h-screen">
-            <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6">
+            <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6 ring-1 ring-gray-200">
                 <p>xomn</p>
             </div>
         </div>);
     }
 
     const [radState, setRad] = useState();
-    const [Contact, setContact] = useState(
-        () => <div></div>
-    );
-
     useEffect(() => {
-        if (radState == 'Stu')
-            setContact(<Stu></Stu>)
-        else if (radState == 'Uni')
+        if (radState == 'Stu') {
+            setContact(<Stu></Stu>);
+            setFormDataSub({
+                address: "",
+                university_name: "",
+                personal_description: "",
+            })
+        }
+        else if (radState == 'Uni') {
             setContact(<Uni></Uni>)
-        else if (radState == 'Comn')
+            setFormDataSub({
+
+            })
+        }
+        else if (radState == 'Comn') {
             setContact(<Comn></Comn>)
+            setFormDataSub({
+
+            })
+        }
     }, [radState]);
+
+    const [Warning, setWarning] = useState();
+    const apiLinks = {
+        Stu: 'http://localhost:8082/api/students',
+        Uni: '',
+        Comn: '',
+    }
+
+    function HandleSubmit(event) {
+        event.preventDefault();
+        var temp = {
+            ...formDataMain,
+            ...formDataSub
+        }
+        delete temp.undefined;
+
+        for (var [key, value] of Object.entries(temp))
+            if (value.length == 0) {
+                setWarning(<h2 className="text-sm font-bold text-white bg-red-600 mb-4 p-2 rounded">Please Enter {key}</h2>);
+                return;
+            }
+
+        if (document.getElementById('password').value != document.getElementById('password2').value) {
+            setWarning(<h2 className="text-sm font-bold text-white bg-red-600 mb-4 p-2 rounded">Password And Confirmed Password is not the same !</h2>);
+            return;
+        }
+
+        axios.post(apiLinks[radState], temp).then(res => {
+            console.log(res);
+            console.log(res.data.message);
+            window.location.replace("./");
+        }).catch(res => {
+            setWarning(<h2 class="text-sm font-bold text-white bg-red-600 mb-4 p-2 rounded">{res.response.data}</h2>);
+            console.log(res);
+            console.log(res.response.data);
+        })
+
+    }
+
 
     return (
         <div className="antialiased grid grid-cols-3 gap-2">
             <div></div>
 
             <div className="flex flex-col items-center justify-center h-screen">
-                <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6">
+                <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6 ring-1 ring-gray-200">
+                    {Warning}
                     <h2 className="text-2xl font-bold text-gray-900 mb-4">Sign Up</h2>
-                    <form className="flex flex-col">
-
-                        <input className="bg-gray-100 text-gray-800 border-0 rounded-md p-2 mb-3" type="text" placeholder="Name" id="Name" name="Name" required="" />
-                        <input className="bg-gray-100 text-gray-800 border-0 rounded-md p-2 mb-3" type="text" placeholder="UserName" id="UserName" name="UserName" />
-                        <input className="bg-gray-100 text-gray-800 border-0 rounded-md p-2 mb-3" type="Email" placeholder="Email" id="Email" name="email" />
+                    <form className="flex flex-col" onSubmit={HandleSubmit}>
+                        <input className="bg-gray-100 text-gray-800 border-0 rounded-md p-2 mb-3" type="text" placeholder="Name" id="Name" name="full_name" onChange={HandleChangeMainForm} />
+                        <input className="bg-gray-100 text-gray-800 border-0 rounded-md p-2 mb-3" type="text" placeholder="Telephone Number" id="Tel" name="phone_number" onChange={HandleChangeMainForm} />
+                        <input className="bg-gray-100 text-gray-800 border-0 rounded-md p-2 mb-3" type="Email" placeholder="Email" id="Email" name="email" onChange={HandleChangeMainForm} />
 
                         {/* Infos */}
                         <div className="flex mb-3 gap-3">
 
-                            <input className="w-1/2 bg-gray-100 text-gray-800 border-0 rounded-md p-2" type="password" placeholder="Password" id="password" name="password" required="" />
-                            <input className="w-1/2 bg-gray-100 text-gray-800 border-0 rounded-md p-2" type="password" placeholder="Confirm password" required="" />
+                            <input className="w-1/2 bg-gray-100 text-gray-800 border-0 rounded-md p-2" type="password" placeholder="Password" id="password" name="password" onChange={HandleChangeMainForm} />
+                            <input className="w-1/2 bg-gray-100 text-gray-800 border-0 rounded-md p-2" type="password" placeholder="Confirm password" id="password2" />
 
                         </div>
 
                         {/* Gender */}
-                        <label className="text-sm mb-2 text-gray-900 cursor-pointer" htmlfor="gender">
-                            Gender
-                        </label>
-                        <select className="bg-gray-100 text-gray-900 border-0 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150" id="gender">
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
+                        <label className="text-sm mb-2 text-gray-900 cursor-pointer" htmlFor="gender"> Gender </label>
+                        <select className="bg-gray-100 text-gray-900 border-0 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150" id="gender" name='gender' onChange={HandleChangeMainForm}>
+                            <option value="True">Male</option>
+                            <option value="False">Female</option>
                         </select>
 
                         {/* Roles */}
-                        <label className="text-sm mb-2 text-gray-900 cursor-pointer" htmlfor="age">
+                        <label className="text-sm mb-2 text-gray-900 cursor-pointer" htmlFor="age">
                             Role
                         </label>
                         <div className="flex justify-center overflow-hidden">
                             <div className="radio-inputs">
 
                                 <label>
-                                    <input className="radio-input" type="radio" name="role" onChange={() => setRad("Stu")} />
+                                    <input className="radio-input" type="radio" value="Student" name="role" onChange={e => { setRad("Stu"); HandleChangeMainForm(e) }} />
                                     <span className="radio-tile">
                                         <span className="radio-icon">
                                             <svg className="svg-icon" width="1040px" viewBox="0 0 1040 800" version="1.1"
@@ -91,7 +186,7 @@ const Register = () => {
                                 </label>
 
                                 <label>
-                                    <input className="radio-input" type="radio" name="role" onChange={() => setRad("Uni")} />
+                                    <input className="radio-input" type="radio" value="University" name="role" onChange={e => { setRad("Uni"), HandleChangeMainForm(e) }} />
                                     <span className="radio-tile">
                                         <span className="radio-icon mb-1">
                                             <svg className="svg-icon" width="1097px" viewBox="0 0 1097 1054" version="1.1"
@@ -104,7 +199,7 @@ const Register = () => {
                                 </label>
 
                                 <label>
-                                    <input className="radio-input" type="radio" name="role" onChange={() => setRad("Comn")} />
+                                    <input className="radio-input" type="radio" value="CommunityLeader" name="role" onChange={e => { setRad("Comn"), HandleChangeMainForm(e) }} />
                                     <span className="radio-tile">
                                         <span className="radio-icon ">
                                             <svg className="svg-icon" viewBox="0 0 950 900" version="1.1"
