@@ -129,7 +129,7 @@ const Register = () => {
             console.log(res.data.message);
             window.location.replace("./");
         }).catch(res => {
-            setWarning(<h2 class="text-sm font-bold text-white bg-red-600 mb-4 p-2 rounded">{res.response.data}</h2>);
+            setWarning(<h2 className="text-sm font-bold text-white bg-red-600 mb-4 p-2 rounded">{res.response.data}</h2>);
             console.log(res);
             console.log(res.response.data);
         })
@@ -171,7 +171,6 @@ const Register = () => {
                         </label>
                         <div className="flex justify-center overflow-hidden">
                             <div className="radio-inputs">
-
                                 <label>
                                     <input className="radio-input" type="radio" value="Student" name="role" onChange={e => { setRad("Stu"); HandleChangeMainForm(e) }} />
                                     <span className="radio-tile">

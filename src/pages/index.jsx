@@ -1,6 +1,3 @@
 export { default as Login } from "./Login";
-export { default as Home } from "./Home";
-export { Project } from "./Project";
-export { ProjectDetail } from "./Project";
-export { PostProject } from "./Project";
-export { UpdateProject } from "./Project";
+export { default as Home } from "./student-pages/Home";
+export { Project, ProjectDetail, PostProject, UpdateProject } from "./community-leader-pages";
