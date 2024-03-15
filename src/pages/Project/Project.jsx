@@ -1,7 +1,7 @@
-import { data } from "autoprefixer";
+
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import axios, { axiosPrivate } from "~/api/axios";
+import axios from "~/api/axios";
 
 // import axios from "~/api/axios";
 import { ProjectTable } from "~/components";
@@ -48,8 +48,8 @@ const Project = () => {
 
   useEffect(() => {
     axios.get("/api/projects").then((res) => {
+      setProjects(res.data);
       console.log(res.data);
-      // setProjects(res.data);
     });
   }, []);
   return (
