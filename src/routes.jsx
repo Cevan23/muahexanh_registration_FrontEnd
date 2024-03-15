@@ -14,7 +14,6 @@ const publicRoutes = [
     { path: "/community-leader/form", component: FormProject },
     { path: "/community-leader/:id/update", component: FormProject },]
 
-
 const privateRoutes = [];
 
 export { publicRoutes, privateRoutes };

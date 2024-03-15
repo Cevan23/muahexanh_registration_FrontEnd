@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "~/api/axios";
 
-const FormProject = () => {
+const PostProject = () => {
   const [message, setMessage] = useState("");
   const [formData, setFormData] = useState({
     title: "",
@@ -275,4 +275,4 @@ const FormProject = () => {
   );
 };
 
-export default FormProject;
+export default PostProject;

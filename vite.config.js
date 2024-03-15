@@ -1,12 +1,12 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import path from "node:path"
+import path from "node:path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
   resolve: {
     alias: {
-      "~": path.resolve(__dirname, "./src")
+      "~": path.resolve(__dirname, "./src"),
     },
   },
   plugins: [react()],
@@ -14,9 +14,8 @@ export default defineConfig({
     watch: {
       usePolling: true,
     },
-    host: true, 
+    host: true,
     strictPort: true,
     port: 80,
-  }
-  
+  },
 });
