@@ -1,20 +1,48 @@
-
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "~/api/axios";
 import { ProjectItem } from "~/components";
+import { mock_projects } from "~/const";
+import { useDebounce } from "~/hooks/useDebounce";
 
 const Project = () => {
   const [filterDropdown, setFilterDropdown] = useState(false);
 
-
+  //mock project use for testing
   const [projects, setProjects] = useState([]);
+  const [searchProjects, setSearchProjects] = useState("");
+  const debounced = useDebounce(searchProjects, 500);
 
   useEffect(() => {
-    axios.get("/api/projects/getByLeader/1").then((res) => {
-      setProjects(res.data);
+    if (debounced === "") {
+      axios
+        .get("/api/projects/getByLeader/1")
+        .then((res) => {
+          setProjects(res.data);
+        })
+        .catch(() => {
+          // Catch for test mock API
+          setProjects(mock_projects);
+        });
+
+      return;
+    }
+
+    // Test for mock API filter calls
+    setProjects(() => {
+      const filteredProjects = mock_projects.data.filter((project) =>
+        project.title.toLowerCase().includes(debounced.toLowerCase())
+      );
+
+      console.log("After do filter: ", filteredProjects);
+      return {
+        data: [...filteredProjects],
+      };
     });
-  }, []);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debounced]);
+
   return (
     <>
       <div id="community-projects" className="px-20 py-10">
@@ -28,9 +56,7 @@ const Project = () => {
                 <button
                   id="dropdown-button"
                   onClick={() => {
-                    console.log("prev:", filterDropdown);
                     setFilterDropdown((prev) => !prev);
-                    console.log("after:", filterDropdown);
                   }}
                   className="min-w-[150px] flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-s-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100"
                   type="button"
@@ -97,7 +123,6 @@ const Project = () => {
                   </ul>
                 </div>
               </div>
-              
 
               {/* Search */}
               <div className="relative w-full">
@@ -106,6 +131,8 @@ const Project = () => {
                   id="search-dropdown"
                   className="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                   placeholder="Mua he gi do..."
+                  value={searchProjects}
+                  onChange={(e) => setSearchProjects(e.target.value)}
                   required
                 />
                 <button
@@ -134,6 +161,7 @@ const Project = () => {
           </form>
         </div>
 
+        {/* Add project button */}
         <div className="buttons-container flex justify-start mt-4">
           <Link
             to="/community-leader/form"
@@ -142,14 +170,11 @@ const Project = () => {
             Add Project
           </Link>
         </div>
-        
 
         {/* Table */}
         <div className="relative overflow-x-auto sm:rounded-lg mt-5">
           <ProjectItem activities={projects} />
         </div>
-
- 
       </div>
     </>
   );

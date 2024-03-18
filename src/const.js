@@ -1,0 +1,37 @@
+export const mock_projects = {
+  data: [
+    {
+      id: 1,
+      title: "Project 1",
+      status: "Pending",
+      dateStart: new Date(2015, 11, 17).toDateString(),
+      dateEnd: new Date(2015, 11, 20).toDateString(),
+      description: "This is a project 1",
+      maxProjectMembers: 60,
+      maxSchoolRegistrations: 3,
+      address: "Hà Nội",
+    },
+    {
+      id: 2,
+      title: "Project 2",
+      status: "Success",
+      dateStart: new Date(2017, 8, 17).toDateString(),
+      dateEnd: new Date(2017, 11, 20).toDateString(),
+      description: "This is a project 2",
+      maxProjectMembers: 30,
+      maxSchoolRegistrations: 2,
+      address: "Hồ Chí Minh",
+    },
+    {
+      id: 3,
+      title: "Project 3",
+      status: "Pending",
+      dateStart: new Date(2022, 11, 17).toDateString(),
+      dateEnd: new Date(2022, 11, 20).toDateString(),
+      description: "This is a project 3",
+      maxProjectMembers: 100,
+      maxSchoolRegistrations: 3,
+      address: "Đà Nẵng",
+    },
+  ],
+};
