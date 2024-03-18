@@ -4,7 +4,7 @@ import Register from "./pages/Register";
 import Profile from "./components/Profile";
 
 const publicRoutes = [
-  
+
   { path: "/register", component: Register, layout: null },
   { path: "/login", component: Login, layout: null },
   { path: "/", component: Profile }, //Test route profile sau này sẽ làm component của 3 Role
@@ -21,7 +21,8 @@ const publicRoutes = [
 
 
 
-  //Community leader route
+  
+  //Community leader route 
   { path: "/community-leader", component: Project },
   { path: "/community-leader/:id", component: ProjectDetail },
   { path: "/community-leader/form", component: PostProject },
