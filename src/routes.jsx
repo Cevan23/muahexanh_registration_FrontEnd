@@ -1,13 +1,13 @@
 import { Login, Home } from "./pages";
 import { Project, ProjectDetail, PostProject, UpdateProject } from "./pages/community-leader-pages";
 import Register from "./pages/Register";
-import Profile from "./components/Profile";
+import Profile from "./pages/community-leader-pages/components/Profile/Profile";
 
 const publicRoutes = [
 
   { path: "/register", component: Register, layout: null },
   { path: "/login", component: Login, layout: null },
-  { path: "/", component: Profile }, //Test route profile sau này sẽ làm component của 3 Role
+  { path: "/:id", component: Profile }, //Test route profile sau này sẽ làm component của 3 Role
   
   
 
