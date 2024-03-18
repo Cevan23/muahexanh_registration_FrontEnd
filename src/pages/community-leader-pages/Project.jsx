@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import { Link } from "react-router-dom";
 import axios from "~/api/axios";
 import { ProjectItem } from "~/components";
@@ -11,9 +13,11 @@ const Project = () => {
   //mock project use for testing
   const [projects, setProjects] = useState([]);
   const [searchProjects, setSearchProjects] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const debounced = useDebounce(searchProjects, 500);
 
   useEffect(() => {
+    setIsLoading(true);
     if (debounced === "") {
       axios
         .get("/api/projects/getByLeader/1")
@@ -23,6 +27,9 @@ const Project = () => {
         .catch(() => {
           // Catch for test mock API
           setProjects(mock_projects);
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
 
       return;
@@ -39,7 +46,7 @@ const Project = () => {
         data: [...filteredProjects],
       };
     });
-
+    setIsLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debounced]);
 
@@ -49,7 +56,7 @@ const Project = () => {
         {/* Search and filter */}
         <div className="seach-filter">
           <form className="max-w-lg mx-auto">
-            <div className="flex">
+            <div className="flex relative">
               {/* Filter container */}
               <div className="filter-container flex-col max-w-[150px]">
                 {/* Filter Button */}
@@ -173,7 +180,11 @@ const Project = () => {
 
         {/* Table */}
         <div className="relative overflow-x-auto sm:rounded-lg mt-5">
-          <ProjectItem activities={projects} />
+          {isLoading ? (
+            <Skeleton className="h-64 rounded-lg my-2.5" count={3} />
+          ) : (
+            <ProjectItem activities={projects} />
+          )}
         </div>
       </div>
     </>
