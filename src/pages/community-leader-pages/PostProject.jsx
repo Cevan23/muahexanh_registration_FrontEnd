@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "~/api/axios";
 
 const PostProject = () => {
@@ -47,12 +47,13 @@ const PostProject = () => {
         // thumbnail: "",
       });
     } catch (error) {
+      console.log(message)
       console.log("Error submitting form: ", error);
     }
   };
 
   const handleInputChange = async (e) => {
-    const { value, type, name } = e.target;
+    const { value, name } = e.target;
     // if (type === file) {
     //   const file = e.target.files[0];
     //   setFormData({

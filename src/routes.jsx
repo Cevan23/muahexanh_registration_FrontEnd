@@ -24,7 +24,7 @@ const publicRoutes = [
   
   //Community leader route 
   { path: "/community-leader", component: Project },
-  { path: "/community-leader/:id", component: ProjectDetail },
+  { path: "/community-leader/project-detail/:projectId", component: ProjectDetail },
   { path: "/community-leader/form", component: PostProject },
   { path: "/community-leader/:id/update", component: UpdateProject },
 ];

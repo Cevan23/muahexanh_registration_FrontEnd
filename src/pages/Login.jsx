@@ -1,5 +1,5 @@
 import axios from "~/api/axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const Login = () => {
   const [Warning, setWarning] = useState();
@@ -36,7 +36,7 @@ const Login = () => {
   }
 
   function HandleChange(event) {
-    const { value, type, name } = event.target;
+    const { value, name } = event.target;
     setFormData({
       ...formData,
       [name]: value
