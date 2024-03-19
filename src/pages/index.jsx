@@ -6,4 +6,4 @@ export {
   PostProject,
   UpdateProject,
 } from "./community-leader-pages";
-export { default as Home } from "./university-admin-pages/Home";
+export { default as UniversityHome } from "./university-admin-pages/Home";

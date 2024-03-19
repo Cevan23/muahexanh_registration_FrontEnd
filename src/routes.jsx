@@ -1,4 +1,4 @@
-import { Login, Home } from "./pages";
+import { Login, StudentHome, UniversityHome } from "./pages";
 import {
   Project,
   ProjectDetail,
@@ -14,10 +14,10 @@ const publicRoutes = [
   { path: "/:id", component: Profile }, //Test route profile sau này sẽ làm component của 3 Role
 
   //University route
-  { path: "/university", component: Home },
+  { path: "/university", component: UniversityHome },
 
   //Student-route
-  { path: "/student", component: Home },
+  { path: "/student", component: StudentHome },
 
   //Community leader route
   { path: "/community-leader", component: Project },

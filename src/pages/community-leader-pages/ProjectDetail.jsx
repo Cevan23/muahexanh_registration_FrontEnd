@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "~/api/axios";
 import { useParams } from "react-router-dom";
 import { mock_projectDetail } from "~/const";
+import images from "~/assets";
 
 const ProjectDetail = () => {
   const { projectId } = useParams();
@@ -16,11 +17,14 @@ const ProjectDetail = () => {
       .catch(() => setProjectDetail(mock_projectDetail));
   }, [projectId]);
 
+  console.log(projectDetail)
   return (
     <div>
       {projectDetail && (
         <>
-          <div className="w-full h-96">Image</div>
+          <div className="w-full h-[550px]">
+            <img src={images.homebanner} className="h-full w-full" />
+          </div>
           <div className="">
             <div className="flex justify-between items-center pt-5 px-20">
               <div>
@@ -30,7 +34,7 @@ const ProjectDetail = () => {
                 <div className="flex justify-between font-bold">
                   <h1>{projectDetail.dateStart}</h1>
                   <h1 className="ml-5">
-                    Students Assigned: ?/{projectDetail.maxProjectMembers}
+                    Students Assigned: ?/{projectDetail.maximumStudents}
                   </h1>
                 </div>
               </div>
