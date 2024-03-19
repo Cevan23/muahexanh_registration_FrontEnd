@@ -24,6 +24,7 @@ const UpdateProject = () => {
         setFormData(response.data);
       } catch (error) {
         console.log("Error fetching data: ", error);
+        console.log(message)
       }
     };
 

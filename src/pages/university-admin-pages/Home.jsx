@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react";
-import axios from "~/api/axios";
 import { ProjectItem } from "~/components";
 import { mock_projects } from "~/const";
 import images from "~/assets";
-import { all } from "axios";
 const projectFilter = ["all_projects", "university_projects"];
 const Home = () => {
   const [projects, setProjects] = useState([]);
@@ -24,32 +22,17 @@ const Home = () => {
   return (
     <div className="wrapper px-20 py-10 border-4">
       <div className="flex justify-center">
-        <img src={images.homebanner} alt="" className="max-w-[1200px]" />
+        <img src={images.homebanner} alt="" className="w-full" />
       </div>
       <form className="max-w-md mx-auto">
         <label
-          for="default-search"
+          htmlFor="default-search"
           className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
         >
           Search
         </label>
         <div className="relative pt-10 ">
           <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-            {/* <svg
-              className="w-4 h-4 text-gray-500 items-center"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 20 20"
-            >
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-              />
-            </svg> */}
           </div>
           <input
             type="search"
