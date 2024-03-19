@@ -5,19 +5,17 @@ import { useParams } from "react-router-dom";
 import { mock_projectDetail } from "~/const";
 import images from "~/assets";
 
-const ProjectDetail = () => {
+const StudentProjectDetail = () => {
   const { projectId } = useParams();
   const [projectDetail, setProjectDetail] = useState();
 
   useEffect(() => {
-    //Mai mot truyen leader id zo so 1
+    //Mai mot truyen student id zo so 1
     axios
       .get(`/api/projects/getByLeaderIDAndProjectID/1/${projectId}`)
       .then((res) => setProjectDetail(res.data.data))
       .catch(() => setProjectDetail(mock_projectDetail));
   }, [projectId]);
-
-  console.log(projectDetail);
   return (
     <div>
       {projectDetail && (
@@ -54,8 +52,7 @@ const ProjectDetail = () => {
               <div className="flex items-center">Address</div>
               <div className="flex items-center">PhoneNumber</div>
               <div className="flex">
-                <Button className="">Approve</Button>
-                <Button className="ml-3">Deny</Button>
+                <Button className="">Enroll</Button>
               </div>
             </div>
           </div>
@@ -65,4 +62,4 @@ const ProjectDetail = () => {
   );
 };
 
-export default ProjectDetail;
+export default StudentProjectDetail;

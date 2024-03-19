@@ -16,7 +16,7 @@ const Header = () => {
           <div className="sm:block grid mr-2">
             <div className="text-sm">Hello!</div>
             <div className="font-bold text-lg">
-              {loginState.loginData.fullName}
+              {/* {loginState.loginData.fullName} */}
             </div>
           </div>
 
