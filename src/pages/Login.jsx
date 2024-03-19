@@ -1,8 +1,8 @@
 import axios from "~/api/axios";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
-import Context from "~/store/Context";
+import { useAuth } from "~/hooks";
 
 const Login = () => {
   const [Warning, setWarning] = useState();
@@ -14,7 +14,7 @@ const Login = () => {
   const navigator = useNavigate();
   // eslint-disable-next-line no-unused-vars
   const [cookies, setCookie] = useCookies(["userCookie"]);
-  const context = useContext(Context);
+  const { setAuth, setIsLoggedIn } = useAuth();
 
   function HandleSubmit(event) {
     event.preventDefault();
@@ -48,11 +48,8 @@ const Login = () => {
       .then((res) => {
         // Login with role of community leader
         setCookie("userCookie", JSON.stringify(res.data.data));
-        context.setLoginState({
-          isLoggedIn: true,
-          role: res.data.data.role.toLowerCase(),
-          loginData: { ...res.data.data },
-        });
+        setAuth({ ...res.data.data });
+        setIsLoggedIn(true);
 
         // Redirect to community leader page
         if (formData.role.toLowerCase() === "communityleader")
@@ -65,7 +62,6 @@ const Login = () => {
 
   function HandleChange(event) {
     const { value, name } = event.target;
-    console.log(name, value);
     setFormData({
       ...formData,
       [name]: value,

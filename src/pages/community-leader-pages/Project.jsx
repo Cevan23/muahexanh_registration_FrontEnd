@@ -1,13 +1,11 @@
-import { useState, useEffect, useContext } from "react";
-import { useCookies } from "react-cookie";
+import { useState, useEffect } from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "~/api/axios";
 import { ProjectItem } from "~/components";
 import { mock_projects } from "~/const";
-import { useDebounce } from "~/hooks/useDebounce";
-import Context from "~/store/Context";
+import { useAuth, useDebounce } from "~/hooks";
 
 const Project = () => {
   const [filterDropdown, setFilterDropdown] = useState(false);
@@ -15,30 +13,13 @@ const Project = () => {
   const [searchProjects, setSearchProjects] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const debounced = useDebounce(searchProjects, 500);
-
-  const { loginState, setLoginState } = useContext(Context);
-  const [cookies] = useCookies(["userCookie"]);
-  const navigator = useNavigate();
+  const { auth } = useAuth();
 
   useEffect(() => {
-    if (!loginState.isLoggedIn) {
-      if (cookies.userCookie) {
-        setLoginState({
-          isLoggedIn: true,
-          role: cookies.userCookie.role.toLowerCase(),
-          loginData: { ...cookies.userCookie },
-        });
-        return;
-      } else {
-        navigator("/login");
-        return;
-      }
-    }
-
     setIsLoading(true);
     if (debounced === "")
       axios
-        .get(`/api/projects/getByLeader/${loginState.loginData.id}`)
+        .get(`/api/projects/getByLeader/${auth.id}`)
         .then((res) => {
           setProjects(res.data.data);
           setIsLoading(false);
@@ -49,16 +30,15 @@ const Project = () => {
         });
     else
       setProjects((prev) => {
-        console.log(prev);
         const filteredProjects = prev.filter((project) =>
           project.title.toLowerCase().includes(debounced.toLowerCase())
         );
-        setIsLoading(false);
-        return { ...filteredProjects };
-      });
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loginState.isLoggedIn, debounced]);
+        console.log(filteredProjects);
+        setIsLoading(false);
+        return [...filteredProjects];
+      });
+  }, [debounced]);
 
   return (
     <>

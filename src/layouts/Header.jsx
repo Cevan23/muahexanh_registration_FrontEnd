@@ -1,9 +1,8 @@
-import { useContext } from "react";
 import images from "~/assets";
-import Context from "~/store/Context";
+import { useAuth } from "~/hooks";
 
 const Header = () => {
-  const { loginState } = useContext(Context);
+  const { auth } = useAuth();
 
   return (
     <>
@@ -14,9 +13,7 @@ const Header = () => {
         <div className="flex items-center justify-end mr-4 sm:mr-0">
           <div className="sm:block grid mr-2">
             <div className="text-sm">Hello!</div>
-            <div className="font-bold text-lg">
-              {/* {loginState.loginData.fullName} */}
-            </div>
+            <div className="font-bold text-lg">{auth.fullName}</div>
           </div>
 
           <div>

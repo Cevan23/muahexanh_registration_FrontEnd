@@ -4,20 +4,28 @@ import axios from "~/api/axios";
 import { useParams } from "react-router-dom";
 import { mock_projectDetail } from "~/const";
 import images from "~/assets";
+import { useAuth } from "~/hooks";
 
 const ProjectDetail = () => {
   const { projectId } = useParams();
   const [projectDetail, setProjectDetail] = useState();
+  const { auth } = useAuth();
 
   useEffect(() => {
     //Mai mot truyen leader id zo so 1
     axios
-      .get(`/api/projects/getByLeaderIDAndProjectID/1/${projectId}`)
-      .then((res) => setProjectDetail(res.data.data))
+      .get(`/api/projects/getProjectDetail`, {
+        params: {
+          leaderId: auth.id,
+          projectId: projectId,
+        },
+      })
+      .then((res) => {
+        setProjectDetail(res.data.data);
+      })
       .catch(() => setProjectDetail(mock_projectDetail));
-  }, [projectId]);
+  }, []);
 
-  console.log(projectDetail);
   return (
     <div>
       {projectDetail && (
@@ -34,7 +42,8 @@ const ProjectDetail = () => {
                 <div className="flex justify-between font-bold">
                   <h1>{projectDetail.dateStart}</h1>
                   <h1 className="ml-5">
-                    Students Assigned: ?/{projectDetail.maximumStudents}
+                    Students Assigned: {projectDetail.students.length}/
+                    {projectDetail.maximumStudents}
                   </h1>
                 </div>
               </div>
@@ -49,7 +58,7 @@ const ProjectDetail = () => {
             <div className="text-xl font-bold mb-4">
               Student&apos;s Requests
             </div>
-            <div className="py-3 px-4 flex justify-between rounded-xl bg-green-300">
+            <div className="py-3 px-4 my-4 flex justify-between rounded-xl bg-green-300">
               <div className="flex items-center">Name</div>
               <div className="flex items-center">Address</div>
               <div className="flex items-center">PhoneNumber</div>
@@ -58,6 +67,21 @@ const ProjectDetail = () => {
                 <Button className="ml-3">Deny</Button>
               </div>
             </div>
+
+            {projectDetail.students.map((student, key) => (
+              <div
+                key={key}
+                className="py-3 px-4 my-4 flex justify-between rounded-xl bg-green-300"
+              >
+                <div className="flex items-center">{student.full_name}</div>
+                <div className="flex items-center">{student.address}</div>
+                <div className="flex items-center">{student.phone_number}</div>
+                <div className="flex">
+                  <Button className="">Approve</Button>
+                  <Button className="ml-3">Deny</Button>
+                </div>
+              </div>
+            ))}
           </div>
         </>
       )}

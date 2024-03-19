@@ -18,7 +18,9 @@ const publicRoutes = [
 
   //Student-route
   { path: "/student", component: StudentHome },
+];
 
+const privateRoutes = [
   //Community leader route
   { path: "/community-leader", component: Project },
   {
@@ -28,7 +30,5 @@ const publicRoutes = [
   { path: "/community-leader/form", component: PostProject },
   { path: "/community-leader/:id/update", component: UpdateProject },
 ];
-
-const privateRoutes = [];
 
 export { publicRoutes, privateRoutes };
