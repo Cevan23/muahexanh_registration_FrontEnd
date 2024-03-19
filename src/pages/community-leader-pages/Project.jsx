@@ -1,7 +1,8 @@
 import { useState, useEffect, useContext } from "react";
+import { useCookies } from "react-cookie";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "~/api/axios";
 import { ProjectItem } from "~/components";
 import { mock_projects } from "~/const";
@@ -10,47 +11,54 @@ import Context from "~/store/Context";
 
 const Project = () => {
   const [filterDropdown, setFilterDropdown] = useState(false);
-
-  //mock project use for testing
   const [projects, setProjects] = useState([]);
   const [searchProjects, setSearchProjects] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const debounced = useDebounce(searchProjects, 500);
-  const { loginState } = useContext(Context);
+
+  const { loginState, setLoginState } = useContext(Context);
+  const [cookies] = useCookies(["userCookie"]);
+  const navigator = useNavigate();
 
   useEffect(() => {
+    if (!loginState.isLoggedIn) {
+      if (cookies.userCookie) {
+        setLoginState({
+          isLoggedIn: true,
+          role: cookies.userCookie.role.toLowerCase(),
+          loginData: { ...cookies.userCookie },
+        });
+        return;
+      } else {
+        navigator("/login");
+        return;
+      }
+    }
+
     setIsLoading(true);
-    if (debounced === "") {
+    if (debounced === "")
       axios
         .get(`/api/projects/getByLeader/${loginState.loginData.id}`)
         .then((res) => {
-          setProjects(res.data);
+          setProjects(res.data.data);
+          setIsLoading(false);
         })
         .catch(() => {
           // Catch for test mock API
           setProjects(mock_projects);
-        })
-        .finally(() => {
-          setIsLoading(false);
         });
+    else
+      setProjects((prev) => {
+        console.log(prev);
+        const filteredProjects = prev.filter((project) =>
+          project.title.toLowerCase().includes(debounced.toLowerCase())
+        );
+        setIsLoading(false);
+        return { ...filteredProjects };
+      });
 
-      return;
-    }
-
-    // Test for mock API filter calls
-    setProjects(() => {
-      const filteredProjects = mock_projects.data.filter((project) =>
-        project.title.toLowerCase().includes(debounced.toLowerCase())
-      );
-
-      console.log("After do filter: ", filteredProjects);
-      return {
-        data: [...filteredProjects],
-      };
-    });
-    setIsLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debounced]);
+  }, [loginState.isLoggedIn, debounced]);
 
   return (
     <>

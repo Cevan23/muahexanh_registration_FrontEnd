@@ -1,6 +1,7 @@
 import axios from "~/api/axios";
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
 import Context from "~/store/Context";
 
 const Login = () => {
@@ -8,14 +9,17 @@ const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
+    role: "",
   });
-  const [role, setRole] = useState();
-  const { loginState, setLoginState } = useContext(Context);
   const navigator = useNavigate();
+  // eslint-disable-next-line no-unused-vars
+  const [cookies, setCookie] = useCookies(["userCookie"]);
+  const context = useContext(Context);
 
   function HandleSubmit(event) {
     event.preventDefault();
 
+    //Pre-processing UI elements
     if (formData.email.length == 0 && formData.password.length == 0) {
       setWarning(
         <h2 className="text-sm font-bold text-white bg-red-600 mb-4 p-2 rounded">
@@ -40,33 +44,28 @@ const Login = () => {
     }
 
     axios
-      .post(`http://localhost:8082/api/${role}/login`, formData)
+      .post(`http://localhost:8082/api/login`, formData)
       .then((res) => {
-        console.log(res.data);
-
         // Login with role of community leader
-        setLoginState({
+        setCookie("userCookie", JSON.stringify(res.data.data));
+        context.setLoginState({
           isLoggedIn: true,
-          role: role,
+          role: res.data.data.role.toLowerCase(),
           loginData: { ...res.data.data },
         });
+
+        // Redirect to community leader page
+        if (formData.role.toLowerCase() === "communityleader")
+          navigator("/community-leader");
       })
-      .then(() => {
-        navigator("/community-leader");
-      })
-      .catch((res) => {
-        setWarning(
-          <h2 className="text-sm font-bold text-white bg-red-600 mb-4 p-2 rounded">
-            {res.response.data}
-          </h2>
-        );
-        console.log(res);
-        console.log(res.response.data);
+      .catch((err) => {
+        console.log(err);
       });
   }
 
   function HandleChange(event) {
     const { value, name } = event.target;
+    console.log(name, value);
     setFormData({
       ...formData,
       [name]: value,
@@ -87,9 +86,9 @@ const Login = () => {
                   <input
                     className="radio-input"
                     type="radio"
-                    value="students"
+                    value="student"
                     name="role"
-                    onChange={(e) => setRole(e.target.value)}
+                    onChange={HandleChange}
                   />
                   <span className="radio-tile">
                     <span className="radio-icon">
@@ -115,7 +114,7 @@ const Login = () => {
                     type="radio"
                     value="university"
                     name="role"
-                    onChange={(e) => setRole(e.target.value)}
+                    onChange={HandleChange}
                   />
                   <span className="radio-tile">
                     <span className="radio-icon mb-1">
@@ -141,7 +140,7 @@ const Login = () => {
                     type="radio"
                     value="communityleader"
                     name="role"
-                    onChange={(e) => setRole(e.target.value)}
+                    onChange={HandleChange}
                   />
                   <span className="radio-tile">
                     <span className="radio-icon ">

@@ -5,7 +5,7 @@ const DefaultLayout = ({ children }) => {
     <>
       <Header />
       <div className="h-full w-full">{children}</div>
-      <Footer/>
+      <Footer />
     </>
   );
 };

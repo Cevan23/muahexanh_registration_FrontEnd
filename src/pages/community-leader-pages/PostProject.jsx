@@ -2,7 +2,6 @@ import { useState } from "react";
 import axios from "~/api/axios";
 
 const PostProject = () => {
-  const [message, setMessage] = useState("");
   const [formData, setFormData] = useState({
     title: "",
     address: "",
@@ -34,7 +33,6 @@ const PostProject = () => {
           "Content-Type": "multipart/form-data",
         },
       });
-      setMessage("Insert Project Successfully");
       setFormData({
         title: "",
         address: "",

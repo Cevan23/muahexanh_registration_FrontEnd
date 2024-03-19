@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 const ProjectItem = ({ activities }) => {
   return (
     <div className="">
-      {activities.data &&
-        activities.data.map((activity) => (
+      {activities &&
+        activities.map((activity) => (
           <Link
             to={`project-detail/${activity.id}`}
             key={activity.id}

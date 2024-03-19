@@ -5,7 +5,7 @@ export const Provider = ({ children }) => {
   const [loginState, setLoginState] = useState({
     isLoggedIn: false,
     role: "",
-    id: {},
+    loginData: {},
   });
 
   const contextValue = {

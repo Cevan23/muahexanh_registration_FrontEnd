@@ -11,8 +11,8 @@ function App() {
         <div className="w-full overflow-hidden">
           <Routes>
             {publicRoutes.map((route, index) => {
-              const Layout = route.layout === null ? Fragment : DefaultLayout;
-              const Page = route.component;
+              let Layout = route.layout === null ? Fragment : DefaultLayout;
+              let Page = route.component;
 
               return (
                 <Route
