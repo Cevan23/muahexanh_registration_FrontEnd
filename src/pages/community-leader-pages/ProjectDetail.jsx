@@ -2,6 +2,7 @@ import { Button } from "~/components/Button";
 import { useState, useEffect } from "react";
 import axios from "~/api/axios";
 import { useParams } from "react-router-dom";
+import { mock_projectDetail } from "~/const";
 
 const ProjectDetail = () => {
   const { projectId } = useParams();
@@ -11,7 +12,8 @@ const ProjectDetail = () => {
     //Mai mot truyen leader id zo so 1
     axios
       .get(`/api/projects/getByLeaderIDAndProjectID/1/${projectId}`)
-      .then((res) => setProjectDetail(res.data.data));
+      .then((res) => setProjectDetail(res.data.data))
+      .catch(() => setProjectDetail(mock_projectDetail));
   }, [projectId]);
 
   return (
@@ -36,26 +38,10 @@ const ProjectDetail = () => {
           </div>
           <div className="px-20 py-5">
             <div className="text-4xl font-bold">{projectDetail.title}</div>
-            <div className="text-xl mt-6">
-              {projectDetail.description}
-              Suspendisse pellentesque turpis sit amet ex laoreet, at vulputate
-              lorem sollicitudin. Pellentesque eu est sit amet sem sodales
-              imperdiet. Suspendisse scelerisque ipsum justo, ac malesuada diam
-              scelerisque rutrum. Interdum et malesuada fames ac ante ipsum
-              primis in faucibus. Aliquam tincidunt neque dignissim felis
-              rutrum, placerat ornare neque eleifend. Nulla facilisi. Etiam
-              eleifend quam vitae dui posuere, quis finibus lorem hendrerit.
-              Nunc sed est quis leo egestas vulputate at vitae velit.
-              Suspendisse euismod id tellus sed hendrerit. Vivamus in aliquet
-              nisl. Suspendisse in dapibus lacus. Donec lacinia sapien quis
-              ligula viverra ultricies. Donec massa lorem, lacinia ac purus sit
-              amet, varius rutrum nibh. Vivamus vitae semper magna. Integer a
-              dolor rutrum, ultrices sapien quis, malesuada nulla. Mauris non
-              nibh lacus.
-            </div>
+            <div className="text-xl mt-6">{projectDetail.description}</div>
             <div className="mt-10">List of image</div>
           </div>
-          <div className="mx-20 py-8 px-12 rounded-md bg-blue-gray-100">
+          <div className="mx-20 py-8 px-12 rounded-md bg-blue-gray-100 mb-40">
             <div className="text-xl font-bold mb-4">
               Student&apos;s Requests
             </div>

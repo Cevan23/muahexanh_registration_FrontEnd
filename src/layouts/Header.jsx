@@ -1,16 +1,23 @@
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import images from "~/assets";
+import Context from "~/store/Context";
 
 const Header = () => {
+  const { loginState } = useContext(Context);
+
   return (
     <>
       <div className="px-20 py-2 flex justify-between">
         <div>
-          <img src={images.logo} className="w-[4.2rem] h-20"/>
+          <img src={images.logo} className="w-[4.2rem] h-20" />
         </div>
         <div className="flex items-center justify-end mr-4 sm:mr-0">
           <div className="sm:block grid mr-2">
             <div className="text-sm">Hello!</div>
-            <div className="font-bold text-lg">Hovolo</div>
+            <div className="font-bold text-lg">
+              {loginState.loginData.fullName}
+            </div>
           </div>
 
           <div>

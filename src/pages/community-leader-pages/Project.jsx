@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { Link } from "react-router-dom";
@@ -6,6 +6,7 @@ import axios from "~/api/axios";
 import { ProjectItem } from "~/components";
 import { mock_projects } from "~/const";
 import { useDebounce } from "~/hooks/useDebounce";
+import Context from "~/store/Context";
 
 const Project = () => {
   const [filterDropdown, setFilterDropdown] = useState(false);
@@ -15,12 +16,13 @@ const Project = () => {
   const [searchProjects, setSearchProjects] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const debounced = useDebounce(searchProjects, 500);
+  const { loginState } = useContext(Context);
 
   useEffect(() => {
     setIsLoading(true);
     if (debounced === "") {
       axios
-        .get("/api/projects/getByLeader/1")
+        .get(`/api/projects/getByLeader/${loginState.loginData.id}`)
         .then((res) => {
           setProjects(res.data);
         })
