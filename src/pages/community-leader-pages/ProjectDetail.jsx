@@ -5,10 +5,12 @@ import { useParams } from "react-router-dom";
 import { mock_projectDetail } from "~/const";
 import images from "~/assets";
 import { useAuth } from "~/hooks";
+import { UpdateProject } from "..";
 
 const ProjectDetail = () => {
   const { projectId } = useParams();
   const [projectDetail, setProjectDetail] = useState();
+  const [isUpdate, setIsUpdate] = useState(false);
   const { auth } = useAuth();
 
   useEffect(() => {
@@ -47,35 +49,36 @@ const ProjectDetail = () => {
                   </h1>
                 </div>
               </div>
+              <Button
+                onClick={() => {
+                  setIsUpdate(true);
+                  console.log(isUpdate);
+                }}
+              >
+                Update Project
+              </Button>
             </div>
           </div>
           <div className="px-20 py-5">
             <div className="text-4xl font-bold">{projectDetail.title}</div>
             <div className="text-xl mt-6">{projectDetail.description}</div>
-            <div className="mt-10">List of image</div>
           </div>
           <div className="mx-20 py-8 px-12 rounded-md bg-blue-gray-100 mb-40">
             <div className="text-xl font-bold mb-4">
               Student&apos;s Requests
             </div>
-            <div className="py-3 px-4 my-4 flex justify-between rounded-xl bg-green-300">
-              <div className="flex items-center">Name</div>
-              <div className="flex items-center">Address</div>
-              <div className="flex items-center">PhoneNumber</div>
-              <div className="flex">
-                <Button className="">Approve</Button>
-                <Button className="ml-3">Deny</Button>
-              </div>
-            </div>
-
             {projectDetail.students.map((student, key) => (
               <div
                 key={key}
                 className="py-3 px-4 my-4 flex justify-between rounded-xl bg-green-300"
               >
-                <div className="flex items-center">{student.full_name}</div>
-                <div className="flex items-center">{student.address}</div>
-                <div className="flex items-center">{student.phone_number}</div>
+                <div className="flex items-center w-56">
+                  {student.full_name}
+                </div>
+                <div className="flex items-center w-56">{student.address}</div>
+                <div className="flex items-center w-32">
+                  {student.phone_number}
+                </div>
                 <div className="flex">
                   <Button className="">Approve</Button>
                   <Button className="ml-3">Deny</Button>
@@ -84,6 +87,20 @@ const ProjectDetail = () => {
             ))}
           </div>
         </>
+      )}
+
+      {isUpdate && (
+        <div className="fixed z-1000 inset-0 bg-opacity-50 bg-black">
+          <UpdateProject projectDetail={projectDetail} />
+          <div
+            className="absolute top-5 right-10 text-2xl font-bold text-[#fff] cursor-pointer"
+            onClick={() => {
+              setIsUpdate(false);
+            }}
+          >
+            X
+          </div>
+        </div>
       )}
     </div>
   );

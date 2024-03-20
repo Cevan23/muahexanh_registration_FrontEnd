@@ -1,8 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "~/api/axios";
-import { useParams } from "react-router-dom";
 
-const UpdateProject = () => {
+const UpdateProject = ({ projectDetail }) => {
   const [message, setMessage] = useState("");
   const { id } = useParams();
 
@@ -18,35 +17,6 @@ const UpdateProject = () => {
     thumbnail: null,
   });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`/api/projects/${id}`);
-        console.log(response.data);
-        console.log(response.data.title);
-        setFormData((prevState) => ({
-          ...prevState,
-          title: response.data.title,
-          address: response.data.address,
-          description: response.data.description,
-          max_project_members: response.data.max_project_members,
-          max_school_registrations_members:
-            response.data.max_school_registrations_members,
-          status: response.data.status,
-          date_start: response.data.date_start,
-          date_end: response.data.date_end,
-          thumbnail: response.data.thumbnail,
-        }));
-        console.log(formData);
-      } catch (error) {
-        console.log("Error fetching data: ", error);
-        console.log(message);
-      }
-    };
-
-    fetchData();
-  }, [id]);
-
   const handleSubmitUpdate = async (e) => {
     e.preventDefault();
     const postData = new FormData();
@@ -54,11 +24,16 @@ const UpdateProject = () => {
       postData.append(key, formData[key]);
     });
     try {
-      await axios.put(`/api/projects/${id}`, postData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      await axios.put(
+        `/api/projects/${projectDetail}`,
+        postFormData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+        // { mode: "cors" }
+      );
       setMessage("Update Project Successfully");
     } catch (error) {
       console.log("Error updating form: ", error);
@@ -72,7 +47,8 @@ const UpdateProject = () => {
   };
 
   return (
-    <div className="py-28">
+
+    <div className="py-20">
       <form
         className="max-w-md mx-auto p-5 rounded border-2 shadow-lg"
         onSubmit={handleSubmitUpdate}
@@ -85,9 +61,9 @@ const UpdateProject = () => {
             type="text"
             name="title"
             id="title"
-            className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+            className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none peer"
             placeholder=""
-            value={formData.title}
+            value={projectDetail.title}
             required
             onChange={handleInputChange}
           />
@@ -105,9 +81,9 @@ const UpdateProject = () => {
             id="address"
             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
             placeholder=" "
-            value={formData.address}
-            onChange={handleInputChange}
+            value={projectDetail.address}
             required
+            onChange={handleInputChange}
           />
           <label
             htmlFor="address"
@@ -126,7 +102,7 @@ const UpdateProject = () => {
             placeholder=" "
             required
             onChange={handleInputChange}
-            value={formData.description}
+            value={projectDetail.description}
           />
           <label
             htmlFor="description"
@@ -145,8 +121,7 @@ const UpdateProject = () => {
               placeholder=" "
               required
               onChange={handleInputChange}
-              min="0"
-              value={formData.max_project_members}
+              value={projectDetail.number_of_students}
             />
             <label
               htmlFor="max_project_members"
@@ -165,7 +140,7 @@ const UpdateProject = () => {
               required
               onChange={handleInputChange}
               min="0"
-              value={formData.max_school_registrations_members}
+              value={projectDetail.max_school_registrations_members}
             />
             <label
               htmlFor="max_school_registrations_members"
@@ -185,7 +160,7 @@ const UpdateProject = () => {
             placeholder=" "
             required
             onChange={handleInputChange}
-            value={formData.status}
+            value={projectDetail.status}
           />
           <label
             htmlFor="status"
@@ -203,7 +178,7 @@ const UpdateProject = () => {
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
               required
-              value={formData.date_start}
+              value={projectDetail.time_start}
               onChange={handleInputChange}
             />
             <label
@@ -221,7 +196,7 @@ const UpdateProject = () => {
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
               required
-              value={formData.date_end}
+              value={projectDetail.end_time}
               onChange={handleInputChange}
             />
             <label
