@@ -1,8 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "~/api/axios";
-import { useParams } from "react-router-dom";
 
-const UpdateProject = () => {
+const UpdateProject = ({ projectDetail }) => {
   const [message, setMessage] = useState("");
   const [formData, setFormData] = useState({
     title: "",
@@ -15,21 +14,7 @@ const UpdateProject = () => {
     end_time: "",
   });
 
-  const { id } = useParams();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`/api/projects/${id}`);
-        setFormData(response.data);
-      } catch (error) {
-        console.log("Error fetching data: ", error);
-        console.log(message)
-      }
-    };
-
-    fetchData();
-  }, [id]);
+  console.log(projectDetail);
 
   const handleSubmitUpdate = async (e) => {
     e.preventDefault();
@@ -41,7 +26,7 @@ const UpdateProject = () => {
 
     try {
       await axios.put(
-        `/api/projects/${id}`,
+        `/api/projects/${projectDetail}`,
         postFormData,
         {
           headers: {
@@ -61,7 +46,7 @@ const UpdateProject = () => {
   };
 
   return (
-    <div className="py-44">
+    <div className="py-20">
       <form
         className="max-w-md mx-auto p-5 rounded border-2 shadow-lg"
         onSubmit={handleSubmitUpdate}
@@ -72,9 +57,9 @@ const UpdateProject = () => {
             type="text"
             name="title"
             id="title"
-            className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+            className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none peer"
             placeholder=""
-            value={FormData.title}
+            value={projectDetail.title}
             required
             onChange={handleInputChange}
           />
@@ -92,7 +77,7 @@ const UpdateProject = () => {
             id="floating_password"
             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
             placeholder=" "
-            value={FormData.address}
+            value={projectDetail.address}
             required
             onChange={handleInputChange}
           />
@@ -112,7 +97,7 @@ const UpdateProject = () => {
             placeholder=" "
             required
             onChange={handleInputChange}
-            value={FormData.contact_email}
+            value={projectDetail.contact_email}
           />
           <label
             htmlFor="contact_email"
@@ -131,7 +116,7 @@ const UpdateProject = () => {
             placeholder=" "
             required
             onChange={handleInputChange}
-            value={FormData.description}
+            value={projectDetail.description}
           />
           <label
             htmlFor="description"
@@ -151,7 +136,7 @@ const UpdateProject = () => {
               placeholder=" "
               required
               onChange={handleInputChange}
-              value={FormData.number_of_students}
+              value={projectDetail.number_of_students}
             />
             <label
               htmlFor="floating_first_name"
@@ -170,7 +155,7 @@ const UpdateProject = () => {
               placeholder=" "
               required
               onChange={handleInputChange}
-              value={FormData.status}
+              value={projectDetail.status}
             />
             <label
               htmlFor="status"
@@ -189,7 +174,7 @@ const UpdateProject = () => {
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
               required
-              value={FormData.time_start}
+              value={projectDetail.time_start}
               onChange={handleInputChange}
             />
             <label
@@ -207,7 +192,7 @@ const UpdateProject = () => {
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
               required
-              value={FormData.end_time}
+              value={projectDetail.end_time}
               onChange={handleInputChange}
             />
             <label

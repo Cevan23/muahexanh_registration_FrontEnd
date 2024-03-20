@@ -5,10 +5,12 @@ import { useParams } from "react-router-dom";
 import { mock_projectDetail } from "~/const";
 import images from "~/assets";
 import { useAuth } from "~/hooks";
+import { UpdateProject } from "..";
 
 const ProjectDetail = () => {
   const { projectId } = useParams();
   const [projectDetail, setProjectDetail] = useState();
+  const [isUpdate, setIsUpdate] = useState(false);
   const { auth } = useAuth();
 
   useEffect(() => {
@@ -47,6 +49,14 @@ const ProjectDetail = () => {
                   </h1>
                 </div>
               </div>
+              <Button
+                onClick={() => {
+                  setIsUpdate(true);
+                  console.log(isUpdate);
+                }}
+              >
+                Update Project
+              </Button>
             </div>
           </div>
           <div className="px-20 py-5">
@@ -62,9 +72,13 @@ const ProjectDetail = () => {
                 key={key}
                 className="py-3 px-4 my-4 flex justify-between rounded-xl bg-green-300"
               >
-                <div className="flex items-center w-56">{student.full_name}</div>
+                <div className="flex items-center w-56">
+                  {student.full_name}
+                </div>
                 <div className="flex items-center w-56">{student.address}</div>
-                <div className="flex items-center w-32">{student.phone_number}</div>
+                <div className="flex items-center w-32">
+                  {student.phone_number}
+                </div>
                 <div className="flex">
                   <Button className="">Approve</Button>
                   <Button className="ml-3">Deny</Button>
@@ -73,6 +87,20 @@ const ProjectDetail = () => {
             ))}
           </div>
         </>
+      )}
+
+      {isUpdate && (
+        <div className="fixed z-1000 inset-0 bg-opacity-50 bg-black">
+          <UpdateProject projectDetail={projectDetail} />
+          <div
+            className="absolute top-5 right-10 text-2xl font-bold text-[#fff] cursor-pointer"
+            onClick={() => {
+              setIsUpdate(false);
+            }}
+          >
+            X
+          </div>
+        </div>
       )}
     </div>
   );
