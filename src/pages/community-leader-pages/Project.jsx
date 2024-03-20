@@ -2,13 +2,16 @@ import { useState, useEffect } from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { Link } from "react-router-dom";
+import { Button } from "~/components";
 import axios from "~/api/axios";
 import { ProjectItem } from "~/components";
 import { mock_projects } from "~/const";
 import { useAuth, useDebounce } from "~/hooks";
+import { PostProject } from "..";
 
 const Project = () => {
   const [filterDropdown, setFilterDropdown] = useState(false);
+  const [isAddProject, setIsAddProject] = useState(false);
   const [projects, setProjects] = useState([]);
   const [searchProjects, setSearchProjects] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -24,6 +27,7 @@ const Project = () => {
           setProjects(res.data.data);
           setIsLoading(false);
         })
+
         .catch(() => {
           // Catch for test mock API
           setProjects(mock_projects);
@@ -157,17 +161,16 @@ const Project = () => {
             </div>
           </form>
         </div>
-
         {/* Add project button */}
         <div className="buttons-container flex justify-start mt-4">
-          <Link
-            to="/community-leader/form"
-            className="text-white bg-gradient-to-br from-green-400 to-blue-600 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+          <Button
+            onClick={() => {
+              setIsAddProject(true);
+            }}
           >
             Add Project
-          </Link>
+          </Button>
         </div>
-
         {/* Table */}
         <div className="relative overflow-x-auto sm:rounded-lg mt-5">
           {isLoading ? (
@@ -176,6 +179,20 @@ const Project = () => {
             <ProjectItem activities={projects} />
           )}
         </div>
+        {/* Add project modal */}
+        {isAddProject && (
+          <div className="fixed z-1000 inset-0 bg-opacity-50 bg-black">
+            <PostProject />
+            <div
+              className="absolute top-5 right-10 text-2xl font-bold text-[#fff] cursor-pointer hover:text-red-700"
+              onClick={() => {
+                setIsAddProject(false);
+              }}
+            >
+              X
+            </div>
+          </div>
+        )}{" "}
       </div>
     </>
   );
