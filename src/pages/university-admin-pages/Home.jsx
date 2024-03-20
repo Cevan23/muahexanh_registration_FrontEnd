@@ -13,17 +13,30 @@ const Home = () => {
   console.log(auth);
 
   useEffect(() => {
-    axios
-      .get(`/api/projects/university/${auth.id}`)
-      .then((res) => {
-        console.log(res.data);
-        setProjects(res.data.data.projects);
-      })
-      .catch(() => {
-        // Catch for test mock API
-        setProjects(mock_projects);
-      });
-  }, []);
+    if (selectedProject === "all_projects")
+      axios
+        .get(`/api/projects`)
+        .then((res) => {
+          console.log(res.data);
+          setProjects(res.data);
+        })
+        .catch(() => {
+          // Catch for test mock API
+          setProjects(mock_projects);
+        });
+    else {
+      axios
+        .get(`/api/projects/university/${auth.id}`)
+        .then((res) => {
+          console.log(res.data);
+          setProjects(res.data);
+        })
+        .catch(() => {
+          // Catch for test mock API
+          setProjects(mock_projects);
+        });
+    }
+  }, [selectedProject]);
 
   return (
     <div className="wrapper px-20 py-10 border-4">
@@ -64,6 +77,7 @@ const Home = () => {
           onChange={() => {
             setSelectedProject(projectFilter[0]);
           }}
+          checked
           // onClick={() => handleFilter(projectFilter[0])}
         />
         <label
