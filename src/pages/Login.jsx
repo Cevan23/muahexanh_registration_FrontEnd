@@ -54,6 +54,10 @@ const Login = () => {
         // Redirect to community leader page
         if (formData.role.toLowerCase() === "communityleader")
           navigator("/community-leader");
+        else if (formData.role.toLowerCase() === "university")
+          navigator("/university");
+        else if (formData.role.toLowerCase() === "student")
+          navigator("/student");
       })
       .catch((err) => {
         console.log(err);
@@ -62,6 +66,7 @@ const Login = () => {
 
   function HandleChange(event) {
     const { value, name } = event.target;
+    console.log(name, value);
     setFormData({
       ...formData,
       [name]: value,
