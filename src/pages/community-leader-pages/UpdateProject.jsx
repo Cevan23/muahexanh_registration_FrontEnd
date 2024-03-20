@@ -3,27 +3,26 @@ import axios from "~/api/axios";
 
 const UpdateProject = ({ projectDetail }) => {
   const [message, setMessage] = useState("");
+  const { id } = useParams();
+
   const [formData, setFormData] = useState({
     title: "",
     address: "",
-    contact_email: "",
     description: "",
-    number_of_students: "",
+    max_project_members: 0,
+    max_school_registrations_members: 0,
     status: "",
-    time_start: "",
-    end_time: "",
+    date_start: "",
+    date_end: "",
+    thumbnail: null,
   });
-
-  console.log(projectDetail);
 
   const handleSubmitUpdate = async (e) => {
     e.preventDefault();
-    const postFormData = new FormData();
-
+    const postData = new FormData();
     Object.keys(formData).forEach((key) => {
-      postFormData.set(key, formData[key]);
+      postData.append(key, formData[key]);
     });
-
     try {
       await axios.put(
         `/api/projects/${projectDetail}`,
@@ -42,16 +41,21 @@ const UpdateProject = ({ projectDetail }) => {
   };
 
   const handleInputChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value, type, files } = e.target;
+    const newValue = type === "file" ? files[0] : value;
+    setFormData({ ...formData, [name]: newValue });
   };
 
   return (
+
     <div className="py-20">
       <form
         className="max-w-md mx-auto p-5 rounded border-2 shadow-lg"
         onSubmit={handleSubmitUpdate}
       >
-        <h1 className="py-3 text-center text-xl">Project</h1>
+        <h1 className="py-3 text-center text-2xl uppercase text-green-500">
+          Mùa hè xanh
+        </h1>
         <div className="relative z-0 w-full mb-5 group">
           <input
             type="text"
@@ -73,8 +77,8 @@ const UpdateProject = ({ projectDetail }) => {
         <div className="relative z-0 w-full mb-5 group">
           <input
             type="text"
-            name="floating_password"
-            id="floating_password"
+            name="address"
+            id="address"
             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
             placeholder=" "
             value={projectDetail.address}
@@ -82,33 +86,15 @@ const UpdateProject = ({ projectDetail }) => {
             onChange={handleInputChange}
           />
           <label
-            htmlFor="floating_password"
+            htmlFor="address"
             className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
           >
             Address
           </label>
         </div>
-        <div className="relative z-0 w-full mb-5 group">
-          <input
-            type="email"
-            name="contact_email"
-            id="contact_email"
-            className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-            placeholder=" "
-            required
-            onChange={handleInputChange}
-            value={projectDetail.contact_email}
-          />
-          <label
-            htmlFor="contact_email"
-            className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-          >
-            Contact
-          </label>
-        </div>
 
         <div className="relative z-0 w-full mb-5 group">
-          <input
+          <textarea
             type="text"
             name="description"
             id="description"
@@ -125,13 +111,12 @@ const UpdateProject = ({ projectDetail }) => {
             Description
           </label>
         </div>
-
         <div className="grid md:grid-cols-2 md:gap-6">
           <div className="relative z-0 w-full mb-5 group">
             <input
               type="number"
-              name="floating_first_name"
-              id="floating_first_name"
+              name="max_project_members"
+              id="max_project_members"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
               required
@@ -139,7 +124,7 @@ const UpdateProject = ({ projectDetail }) => {
               value={projectDetail.number_of_students}
             />
             <label
-              htmlFor="floating_first_name"
+              htmlFor="max_project_members"
               className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
               Number of students
@@ -147,30 +132,49 @@ const UpdateProject = ({ projectDetail }) => {
           </div>
           <div className="relative z-0 w-full mb-5 group">
             <input
-              type="text"
-              name="status"
-              id="status"
-              // value="Pending"
+              type="number"
+              name="max_school_registrations_members"
+              id="max_school_registrations_members"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
               required
               onChange={handleInputChange}
-              value={projectDetail.status}
+              min="0"
+              value={projectDetail.max_school_registrations_members}
             />
             <label
-              htmlFor="status"
+              htmlFor="max_school_registrations_members"
               className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
-              Status
+              Max school members
             </label>
           </div>
+        </div>
+
+        <div className="relative z-0 w-full mb-5 group">
+          <input
+            type="text"
+            name="status"
+            id="status"
+            className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+            placeholder=" "
+            required
+            onChange={handleInputChange}
+            value={projectDetail.status}
+          />
+          <label
+            htmlFor="status"
+            className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+          >
+            Status
+          </label>
         </div>
         <div className="grid md:grid-cols-2 md:gap-6">
           <div className="relative z-0 w-full mb-5 group">
             <input
               type="date"
-              name="time_start"
-              id="time_start"
+              name="date_start"
+              id="date_start"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
               required
@@ -178,7 +182,7 @@ const UpdateProject = ({ projectDetail }) => {
               onChange={handleInputChange}
             />
             <label
-              htmlFor="time_start"
+              htmlFor="date_start"
               className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
               Start time
@@ -187,8 +191,8 @@ const UpdateProject = ({ projectDetail }) => {
           <div className="relative z-0 w-full mb-5 group">
             <input
               type="date"
-              name="end_time"
-              id="end_time"
+              name="date_end"
+              id="date_end"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
               required
@@ -196,14 +200,14 @@ const UpdateProject = ({ projectDetail }) => {
               onChange={handleInputChange}
             />
             <label
-              htmlFor="end_time"
+              htmlFor="date_end"
               className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
               End time
             </label>
           </div>
         </div>
-        {/* 
+
         <div className="relative z-0 w-full mb-5 group">
           <input
             type="file"
@@ -213,7 +217,7 @@ const UpdateProject = ({ projectDetail }) => {
             placeholder=" "
             required
             accept="image/*"
-            // onChange={handleInputChange}
+            onChange={handleInputChange}
           />
           <label
             htmlFor="thumbnail"
@@ -221,7 +225,7 @@ const UpdateProject = ({ projectDetail }) => {
           >
             Thumbnail
           </label>
-        </div> */}
+        </div>
         <div className="flex flex-row-reverse space-x-4 space-x-reverse">
           <button
             type="submit"
