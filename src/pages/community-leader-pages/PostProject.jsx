@@ -70,7 +70,7 @@ const PostProject = () => {
     } catch (error) {
       console.log("Error submitting form: ", error);
     }
-    // window.location.reload();
+    window.location.reload();
   };
 
   const handleInputChange = (e) => {

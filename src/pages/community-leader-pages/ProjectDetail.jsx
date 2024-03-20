@@ -44,7 +44,7 @@ const ProjectDetail = () => {
                 <div className="flex justify-between font-bold">
                   <h1>{projectDetail.dateStart}</h1>
                   <h1 className="ml-5">
-                    Students Assigned: {projectDetail.students.length}/
+                    Students Assigned: {projectDetail.students.length}
                     {projectDetail.maximumStudents}
                   </h1>
                 </div>
