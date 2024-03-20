@@ -6,6 +6,7 @@ import { useAuth } from "~/hooks";
 const Header = () => {
   const { auth } = useAuth();
   const [showOptions, setShowOptions] = useState(false);
+  // eslint-disable-next-line no-unused-vars
   const [cookies, setCookie, removeCookie] = useCookies(["userCookie"]);
 
   const HandleSubmit = () => {
@@ -22,7 +23,7 @@ const Header = () => {
 
         <div className="flex items-center justify-end mr-4 sm:mr-0">
           <div className="sm:block grid mr-2">
-            <div className="text-sm">Hello!</div>
+            <div className="text-sm">{auth.role}</div>
             <div className="font-bold text-lg">{auth.fullName}</div>
           </div>
 

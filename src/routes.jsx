@@ -12,15 +12,19 @@ const publicRoutes = [
   { path: "/register", component: Register, layout: null },
   { path: "/login", component: Login, layout: null },
   { path: "/:id", component: Profile }, //Test route profile sau này sẽ làm component của 3 Role
-
-  //University route
-  { path: "/university", component: UniversityHome },
-
-  //Student-route
-  { path: "/student", component: StudentHome },
 ];
 
 const privateRoutes = [
+  //University route
+  { path: "/university", component: UniversityHome },
+  {
+    path: "/university/project-detail/:projectId",
+    component: ProjectDetail,
+  },
+
+  //Student-route
+  { path: "/student", component: StudentHome },
+
   //Community leader route
   { path: "/community-leader", component: Project },
   {
