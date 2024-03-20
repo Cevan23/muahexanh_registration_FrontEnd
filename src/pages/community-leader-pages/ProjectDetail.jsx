@@ -14,7 +14,7 @@ const ProjectDetail = () => {
   useEffect(() => {
     //Mai mot truyen leader id zo so 1
     axios
-      .get(`/api/projects/getProjectDetail`, {
+      .get(`/api/projects/getProjectDetail/`, {
         params: {
           leaderId: auth.id,
           projectId: projectId,
@@ -52,30 +52,19 @@ const ProjectDetail = () => {
           <div className="px-20 py-5">
             <div className="text-4xl font-bold">{projectDetail.title}</div>
             <div className="text-xl mt-6">{projectDetail.description}</div>
-            <div className="mt-10">List of image</div>
           </div>
           <div className="mx-20 py-8 px-12 rounded-md bg-blue-gray-100 mb-40">
             <div className="text-xl font-bold mb-4">
               Student&apos;s Requests
             </div>
-            <div className="py-3 px-4 my-4 flex justify-between rounded-xl bg-green-300">
-              <div className="flex items-center">Name</div>
-              <div className="flex items-center">Address</div>
-              <div className="flex items-center">PhoneNumber</div>
-              <div className="flex">
-                <Button className="">Approve</Button>
-                <Button className="ml-3">Deny</Button>
-              </div>
-            </div>
-
             {projectDetail.students.map((student, key) => (
               <div
                 key={key}
                 className="py-3 px-4 my-4 flex justify-between rounded-xl bg-green-300"
               >
-                <div className="flex items-center">{student.full_name}</div>
-                <div className="flex items-center">{student.address}</div>
-                <div className="flex items-center">{student.phone_number}</div>
+                <div className="flex items-center w-56">{student.full_name}</div>
+                <div className="flex items-center w-56">{student.address}</div>
+                <div className="flex items-center w-32">{student.phone_number}</div>
                 <div className="flex">
                   <Button className="">Approve</Button>
                   <Button className="ml-3">Deny</Button>
