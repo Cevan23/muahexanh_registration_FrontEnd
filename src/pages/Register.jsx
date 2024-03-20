@@ -39,7 +39,7 @@ const Register = () => {
             const { value, name, textContent } = event.target;
             var temp = { ...formDat2 };
             temp[name] = value;
-            if (textContent != 0 && name == 'personal_description')
+            if (textContent.length >=-1 && name == null)
                 temp['personal_description'] = textContent
             setFormDat2(temp);
             setFormDataSub(temp);
@@ -79,11 +79,9 @@ const Register = () => {
         });
 
         function HandleChangeSubForm(event) {
-            const { value, name, textContent } = event.target;
+            const { value, name } = event.target;
             var temp = { ...formDat2 };
             temp[name] = value;
-            if (textContent != 0 && name == 'personal_description')
-                temp['personal_description'] = textContent
             setFormDat2(temp);
             setFormDataSub(temp);
         }
