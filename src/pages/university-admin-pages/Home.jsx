@@ -3,17 +3,21 @@ import { ProjectItem } from "~/components";
 import { mock_projects } from "~/const";
 import images from "~/assets";
 import axios from "~/api/axios";
+import { useAuth } from "~/hooks";
 const projectFilter = ["all_projects", "university_projects"];
 
 const Home = () => {
   const [projects, setProjects] = useState([]);
   const [selectedProject, setSelectedProject] = useState(projectFilter[0]);
+  const { auth } = useAuth();
+  console.log(auth);
 
   useEffect(() => {
     axios
-      .get(`/api/projects`)
+      .get(`/api/projects/university/${auth.id}`)
       .then((res) => {
-        setProjects(res.data);
+        console.log(res.data);
+        setProjects(res.data.data.projects);
       })
       .catch(() => {
         // Catch for test mock API
