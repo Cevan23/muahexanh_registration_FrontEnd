@@ -44,7 +44,7 @@ const Login = () => {
     }
 
     axios
-      .post(`http://localhost:8082/api/login`, formData)
+      .post('http://localhost:8082/api/login', formData)
       .then((res) => {
         // Login with role of community leader
         setCookie("userCookie", JSON.stringify(res.data.data));

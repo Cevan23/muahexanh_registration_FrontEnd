@@ -1,6 +1,7 @@
 import './radio_butt.css'
 import { useState, useEffect } from "react";
 import axios from "~/api/axios";
+import school_list from '~/components/School_lists/schools_list';
 
 const Register = () => {
 
@@ -38,7 +39,7 @@ const Register = () => {
             const { value, name, textContent } = event.target;
             var temp = { ...formDat2 };
             temp[name] = value;
-            if (textContent != 0)
+            if (textContent != 0 && name == 'personal_description')
                 temp['personal_description'] = textContent
             setFormDat2(temp);
             setFormDataSub(temp);
@@ -49,29 +50,65 @@ const Register = () => {
                 <form className="flex flex-col">
                     <input className="bg-gray-100 text-gray-800 border-0 rounded-md p-2 mb-3" placeholder="Address" name="address" onChange={HandleChangeSubForm} />
 
-                    <input className="bg-gray-100 text-gray-800 border-0 rounded-md p-2 mb-3" placeholder="University_Name" name="university_name" onChange={HandleChangeSubForm} />
+                    <label htmlFor="University" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select An University</label>
+                    <select id="University" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-2" name="university_name" onChange={HandleChangeSubForm}>
+                        <option defaultValue>Select an option</option>
+                        {
+                            school_list.map((option, index) => {
+                                return (
+                                    <option key={index} value={option}>
+                                        {option}
+                                    </option>
+                                );
+                            })
+                        }
+                    </select>
+
+                    {/* <input className="bg-gray-100 text-gray-800 border-0 rounded-md p-2 mb-3" placeholder="University_Name" name="university_name" onChange={HandleChangeSubForm} /> */}
 
                     <label className="text-sm mb-2 text-gray-900 cursor-pointer" htmlFor="Biography"> Biography </label>
-                    <div className="bg-gray-100 text-gray-800 border-0 rounded-md p-2 mb-3" placeholder="Biography" name='personal_description' contentEditable="true" onInput={HandleChangeSubForm} style={{ maxHeight: "320px", overflowY: 'auto' }} />
+                    <div className="bg-gray-100 text-gray-800 border-0 rounded-md p-2 mb-3" placeholder="Biography" name='personal_description' contentEditable="true" onInput={HandleChangeSubForm} style={{ minHeight: "320px", maxHeight: "320px", overflowY: 'auto' }} />
                 </form>
             </div>
         </div>);
     }
 
     function Uni() {
+        const [formDat2, setFormDat2] = useState({
+            university_name: "",
+        });
+
+        function HandleChangeSubForm(event) {
+            const { value, name, textContent } = event.target;
+            var temp = { ...formDat2 };
+            temp[name] = value;
+            if (textContent != 0 && name == 'personal_description')
+                temp['personal_description'] = textContent
+            setFormDat2(temp);
+            setFormDataSub(temp);
+        }
+
         return (<div className="flex flex-col items-center justify-center h-screen">
             <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6 ring-1 ring-gray-200">
-                <p>uni</p>
+                <label htmlFor="University" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select An University</label>
+                <select id="University" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-2" name="university_name" onChange={HandleChangeSubForm} >
+                    <option defaultValue>Select an option</option>
+                    {
+                        school_list.map((option, index) => {
+                            return (
+                                <option key={index} value={option}>
+                                    {option}
+                                </option>
+                            );
+                        })
+                    }
+                </select>
             </div>
         </div>);
     }
 
     function Comn() {
-        return (<div className="flex flex-col items-center justify-center h-screen">
-            <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6 ring-1 ring-gray-200">
-                <p>xomn</p>
-            </div>
-        </div>);
+        return;
     }
 
     const [radState, setRad] = useState();
@@ -87,13 +124,13 @@ const Register = () => {
         else if (radState == 'Uni') {
             setContact(<Uni></Uni>)
             setFormDataSub({
-
+                university_name: ""
             })
         }
         else if (radState == 'Comn') {
             setContact(<Comn></Comn>)
             setFormDataSub({
-
+                
             })
         }
     }, [radState]);
@@ -101,8 +138,8 @@ const Register = () => {
     const [Warning, setWarning] = useState();
     const apiLinks = {
         Stu: 'http://localhost:8082/api/students',
-        Uni: '',
-        Comn: '',
+        Uni: 'http://localhost:8082/api/university',
+        Comn: 'http://localhost:8082/api/admins/createCL',
     }
 
     function HandleSubmit(event) {
