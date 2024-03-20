@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import images from "~/assets";
 import { ProjectItem } from "~/components";
 import { mock_projects } from "~/const";
+import axios from "~/api/axios";
 
 const Home = () => {
   const [projects, setProjects] = useState([]);
@@ -13,12 +14,18 @@ const Home = () => {
     setFilterProject(filterProject);
   };
 
-  
   useEffect(() => {
-    setProjects(mock_projects.data);
+    axios
+      .get(`/api/projects`)
+      .then((res) => {
+        setProjects(res.data);
+      })
+      .catch(() => {
+        // Catch for test mock API
+        setProjects(mock_projects);
+      });
   }, [filterProject]);
 
-  console.log(projects);
   return (
     <div className="wrapper px-20 py-10 border-4">
       <div className="flex justify-center flex-col">

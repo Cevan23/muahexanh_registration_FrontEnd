@@ -2,23 +2,25 @@ import { useState, useEffect } from "react";
 import { ProjectItem } from "~/components";
 import { mock_projects } from "~/const";
 import images from "~/assets";
+import axios from "~/api/axios";
 const projectFilter = ["all_projects", "university_projects"];
+
 const Home = () => {
   const [projects, setProjects] = useState([]);
   const [selectedProject, setSelectedProject] = useState(projectFilter[0]);
 
   useEffect(() => {
-    // axios
-    //   .get(`getProjects/${selectedProject}`)
-    //   .then((res) => {
-    //     // setProjects(res.data);
-    //   })
-    //   .catch(() => {
-    //     // Catch for test mock API
-    setProjects(mock_projects);
+    axios
+      .get(`/api/projects`)
+      .then((res) => {
+        setProjects(res.data);
+      })
+      .catch(() => {
+        // Catch for test mock API
+        setProjects(mock_projects);
+      });
+  }, []);
 
-    // });
-  }, [selectedProject]);
   return (
     <div className="wrapper px-20 py-10 border-4">
       <div className="flex justify-center">
@@ -32,8 +34,7 @@ const Home = () => {
           Search
         </label>
         <div className="relative pt-10 ">
-          <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-          </div>
+          <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"></div>
           <input
             type="search"
             id="default-search"
