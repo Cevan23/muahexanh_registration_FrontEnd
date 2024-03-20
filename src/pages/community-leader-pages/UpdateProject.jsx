@@ -1,22 +1,12 @@
 import { useState } from "react";
 import axios from "~/api/axios";
+import Notification from "~/components/Notification";
 
 const UpdateProject = ({ projectDetail }) => {
-  const [message, setMessage] = useState("");
-  const { id } = useParams();
+  const [notification, setNotification] = useState(false);
+  const { students, ...formDataWithoutStudents } = projectDetail;
 
-  const [formData, setFormData] = useState({
-    title: "",
-    address: "",
-    description: "",
-    max_project_members: 0,
-    max_school_registrations_members: 0,
-    status: "",
-    date_start: "",
-    date_end: "",
-    thumbnail: null,
-  });
-
+  const [formData, setFormData] = useState({ ...formDataWithoutStudents });
   const handleSubmitUpdate = async (e) => {
     e.preventDefault();
     const postData = new FormData();
@@ -25,32 +15,30 @@ const UpdateProject = ({ projectDetail }) => {
     });
     try {
       await axios.put(
-        `/api/projects/${projectDetail}`,
-        postFormData,
+        `/api/projects/${projectDetail.id}`,
+        postData,
         {
           headers: {
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
           },
         }
         // { mode: "cors" }
       );
-      setMessage("Update Project Successfully");
+      setNotification(true);
     } catch (error) {
       console.log("Error updating form: ", error);
     }
   };
 
   const handleInputChange = (e) => {
-    const { name, value, type, files } = e.target;
-    const newValue = type === "file" ? files[0] : value;
-    setFormData({ ...formData, [name]: newValue });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
   return (
-
     <div className="py-20">
       <form
-        className="max-w-md mx-auto p-5 rounded border-2 shadow-lg"
+        className="max-w-md mx-auto p-5 rounded border-2 shadow-lg bg-white"
         onSubmit={handleSubmitUpdate}
       >
         <h1 className="py-3 text-center text-2xl uppercase text-green-500">
@@ -63,7 +51,7 @@ const UpdateProject = ({ projectDetail }) => {
             id="title"
             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none peer"
             placeholder=""
-            value={projectDetail.title}
+            value={formData.title}
             required
             onChange={handleInputChange}
           />
@@ -81,7 +69,7 @@ const UpdateProject = ({ projectDetail }) => {
             id="address"
             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
             placeholder=" "
-            value={projectDetail.address}
+            value={formData.address}
             required
             onChange={handleInputChange}
           />
@@ -102,7 +90,7 @@ const UpdateProject = ({ projectDetail }) => {
             placeholder=" "
             required
             onChange={handleInputChange}
-            value={projectDetail.description}
+            value={formData.description}
           />
           <label
             htmlFor="description"
@@ -120,8 +108,9 @@ const UpdateProject = ({ projectDetail }) => {
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
               required
+              min="0"
               onChange={handleInputChange}
-              value={projectDetail.number_of_students}
+              value={formData.maximumStudents}
             />
             <label
               htmlFor="max_project_members"
@@ -140,7 +129,7 @@ const UpdateProject = ({ projectDetail }) => {
               required
               onChange={handleInputChange}
               min="0"
-              value={projectDetail.max_school_registrations_members}
+              value={formData.maximumSchoolsRegistrationMembers}
             />
             <label
               htmlFor="max_school_registrations_members"
@@ -152,22 +141,24 @@ const UpdateProject = ({ projectDetail }) => {
         </div>
 
         <div className="relative z-0 w-full mb-5 group">
-          <input
-            type="text"
-            name="status"
-            id="status"
-            className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-            placeholder=" "
-            required
-            onChange={handleInputChange}
-            value={projectDetail.status}
-          />
           <label
             htmlFor="status"
-            className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            className="block text-sm font-medium text-gray-700"
           >
             Status
           </label>
+          <select
+            id="status"
+            name="status"
+            className="block w-full mt-1 text-sm border-gray-300 focus:ring-blue-500 focus:border-blue-500 border-gray-300 rounded-md"
+            value={formData.status}
+            onChange={handleInputChange}
+          >
+            <option value="pending">Pending</option>
+            <option value="accepted">Accepted</option>
+            <option value="done">Done</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
         </div>
         <div className="grid md:grid-cols-2 md:gap-6">
           <div className="relative z-0 w-full mb-5 group">
@@ -178,7 +169,7 @@ const UpdateProject = ({ projectDetail }) => {
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
               required
-              value={projectDetail.time_start}
+              value={formData.dateStart}
               onChange={handleInputChange}
             />
             <label
@@ -196,7 +187,7 @@ const UpdateProject = ({ projectDetail }) => {
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
               required
-              value={projectDetail.end_time}
+              value={formData.dateEnd}
               onChange={handleInputChange}
             />
             <label
@@ -207,25 +198,7 @@ const UpdateProject = ({ projectDetail }) => {
             </label>
           </div>
         </div>
-
-        <div className="relative z-0 w-full mb-5 group">
-          <input
-            type="file"
-            name="thumbnail"
-            id="thumbnail"
-            className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-            placeholder=" "
-            required
-            accept="image/*"
-            onChange={handleInputChange}
-          />
-          <label
-            htmlFor="thumbnail"
-            className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-          >
-            Thumbnail
-          </label>
-        </div>
+        {notification && <Notification successMessage="Update successfully" />}
         <div className="flex flex-row-reverse space-x-4 space-x-reverse">
           <button
             type="submit"
