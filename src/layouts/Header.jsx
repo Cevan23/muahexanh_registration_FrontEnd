@@ -1,8 +1,18 @@
+import { useState } from "react";
+import { useCookies } from "react-cookie";
 import images from "~/assets";
 import { useAuth } from "~/hooks";
 
 const Header = () => {
   const { auth } = useAuth();
+  const [showOptions, setShowOptions] = useState(false);
+  // eslint-disable-next-line no-unused-vars
+  const [cookies, setCookie, removeCookie] = useCookies(["userCookie"]);
+
+  const HandleSubmit = () => {
+    removeCookie("userCookie");
+    window.location.reload();
+  };
 
   return (
     <>
@@ -10,25 +20,37 @@ const Header = () => {
         <div>
           <img src={images.logo} className="w-[4.2rem] h-20" />
         </div>
+
         <div className="flex items-center justify-end mr-4 sm:mr-0">
           <div className="sm:block grid mr-2">
-            <div className="text-sm">Hello!</div>
+            <div className="text-sm">{auth.role}</div>
             <div className="font-bold text-lg">{auth.fullName}</div>
           </div>
 
           <div>
-            <div id="avatar" className="bg-black rounded-full w-10 h-10"></div>
+            <button onClick={() => setShowOptions((prev) => !prev)}>
+              <div
+                id="avatar"
+                className="bg-black rounded-full w-10 h-10"
+              ></div>
+            </button>
+
             <div
               id="dropdown"
-              className="hidden absolute right-0 mx-2 md:mx-56 mt-2 border-2 border-gray-200 p-4 w-48 bg-white shadow-xl rounded-md"
+              className={`${
+                showOptions ? "" : "hidden"
+              } absolute right-0 mx-20  mt-2 border-2 border-gray-200 p-4 w-48 bg-white shadow-xl rounded-md`}
             >
               <ul>
                 <li>
-                  <form action="Logout">
-                    <div className="focus:ring transform transition hover:scale-105 duration-300 ease-in-out">
+                  <form onSubmit={HandleSubmit}>
+                    <button
+                      className="focus:ring transform transition hover:scale-105 duration-300 ease-in-out cursor-pointer w-full text-left"
+                      type="submit"
+                    >
                       <i className="fa-solid fa-arrow-right-from-bracket mr-3 text-red-800"></i>
-                      <input type="submit" value="Log out" />
-                    </div>
+                      Log out
+                    </button>
                   </form>
                 </li>
               </ul>
