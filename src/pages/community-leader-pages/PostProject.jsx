@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { useAuth } from "~/hooks";
 import axios from "~/api/axios";
 
 const PostProject = () => {
+  const auth = useAuth();
   const [formData, setFormData] = useState({
     title: "",
     address: "",
@@ -9,18 +12,17 @@ const PostProject = () => {
     max_project_members: 0,
     max_school_registrations_members: 0,
     status: "",
-    date_start: "",
-    date_end: "",
+    date_start: new Date(),
+    date_end: new Date(),
     thumbnail: null,
   });
 
   const formatDate = (date) => {
-    const d = new Date(date),
-      month = "" + (d.getMonth() + 1),
-      day = "" + d.getDate(),
-      year = d.getFullYear();
-
-    return [year, month.padStart(2, "0"), day.padStart(2, "0")].join("-");
+    const d = new Date(date);
+    const year = d.getFullYear().toString().slice(-2); // Get last two digits of the year
+    const month = (d.getMonth() + 1).toString().padStart(2, "0"); // Ensure month is two digits
+    const day = d.getDate().toString().padStart(2, "0"); // Ensure day is two digits
+    return `${year}/${month}/${day}`;
   };
   const handleSubmit = async (e) => {
     const postFormData = new FormData();
@@ -35,16 +37,23 @@ const PostProject = () => {
         formData.max_school_registrations_members
       );
       postFormData.append("status", "pending");
-      postFormData.append("date_start", formatDate(formData.date_start));
-      postFormData.append("date_end", formatDate(formData.date_end));
+      postFormData.append("date_start", formData.date_start);
+      postFormData.append("date_end", formData.date_end);
       postFormData.append("img_root", formData.thumbnail.name);
     }
+    console.log("start data: ", formData.date_start);
+    console.log("end data: ", formData.date_start);
     try {
-      await axios.post("/api/projects", postFormData, {
-        headers: {
-          "Content-Type": "application/json",
+      await axios.post(
+        `/api/communityleader/createProject?communityLeaderId=${auth.auth.id}`,
+        postFormData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
         },
-      });
+        console.log(postFormData)
+      );
       console.log("Success submitting form");
       setFormData(() => ({
         title: "",
@@ -61,6 +70,7 @@ const PostProject = () => {
     } catch (error) {
       console.log("Error submitting form: ", error);
     }
+    // window.location.reload();
   };
 
   const handleInputChange = (e) => {
@@ -84,7 +94,7 @@ const PostProject = () => {
   return (
     <div className="py-28">
       <form
-        className="max-w-md mx-auto p-5 rounded border-2 shadow-lg"
+        className="max-w-md mx-auto p-5 rounded border-2 shadow-lg bg-white"
         onSubmit={handleSubmit}
       >
         <h1 className="py-3 text-center text-2xl uppercase text-green-500">
