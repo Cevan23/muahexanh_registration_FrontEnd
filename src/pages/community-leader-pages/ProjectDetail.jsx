@@ -14,7 +14,7 @@ const ProjectDetail = () => {
   useEffect(() => {
     //Mai mot truyen leader id zo so 1
     axios
-      .get(`/api/projects/getProjectDetail`, {
+      .get(`/api/projects/getProjectDetail/`, {
         params: {
           leaderId: auth.id,
           projectId: projectId,

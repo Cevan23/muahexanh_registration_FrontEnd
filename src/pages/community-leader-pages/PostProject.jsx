@@ -1,77 +1,95 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "~/api/axios";
 
 const PostProject = () => {
   const [formData, setFormData] = useState({
     title: "",
     address: "",
-    contact_email: "",
     description: "",
-    number_of_students: "",
+    max_project_members: 0,
+    max_school_registrations_members: 0,
     status: "",
-    time_start: "",
-    end_time: "",
-    // thumbnail: "",
+    date_start: "",
+    date_end: "",
+    thumbnail: null,
   });
 
+  const formatDate = (date) => {
+    const d = new Date(date),
+      month = "" + (d.getMonth() + 1),
+      day = "" + d.getDate(),
+      year = d.getFullYear();
+
+    return [year, month.padStart(2, "0"), day.padStart(2, "0")].join("-");
+  };
   const handleSubmit = async (e) => {
     const postFormData = new FormData();
     e.preventDefault();
-    postFormData.append("title", formData.title);
-    postFormData.append("address", formData.address);
-    postFormData.append("contact_email", formData.contact_email);
-    postFormData.append("description", formData.description);
-    postFormData.append("number_of_students", formData.number_of_students);
-    postFormData.append("status", formData.status);
-    postFormData.append("time_start", formData.time_start);
-    postFormData.append("end_time", formData.end_time);
-    // postFormData.append("thumbnail", formData.thumbnail);
-
+    {
+      postFormData.append("title", formData.title);
+      postFormData.append("address", formData.address);
+      postFormData.append("description", formData.description);
+      postFormData.append("max_project_members", formData.max_project_members);
+      postFormData.append(
+        "max_school_registrations_members",
+        formData.max_school_registrations_members
+      );
+      postFormData.append("status", "pending");
+      postFormData.append("date_start", formatDate(formData.date_start));
+      postFormData.append("date_end", formatDate(formData.date_end));
+      postFormData.append("img_root", formData.thumbnail.name);
+    }
     try {
       await axios.post("/api/projects", postFormData, {
         headers: {
-          "Content-Type": "multipart/form-data",
+          "Content-Type": "application/json",
         },
       });
-      setFormData({
+      console.log("Success submitting form");
+      setFormData(() => ({
         title: "",
         address: "",
-        contact_email: "",
         description: "",
-        number_of_students: "",
+        max_project_members: 0,
+        max_school_registrations_members: 0,
         status: "",
-        time_start: "",
-        end_time: "",
-        // thumbnail: "",
-      });
+        date_start: "",
+        date_end: "",
+        thumbnail: null,
+      }));
+      console.log("Form data: ", formData);
     } catch (error) {
       console.log("Error submitting form: ", error);
     }
   };
 
-  const handleInputChange = async (e) => {
-    const { value, name } = e.target;
-    // if (type === file) {
-    //   const file = e.target.files[0];
-    //   setFormData({
-    //     ...formData,
-    //     thumbnail: file,
-    //   });
-    // } else {
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-    // }
+  const handleInputChange = (e) => {
+    const { type, name } = e.target;
+    if (type === "file") {
+      const file = e.target.files[0];
+      if (file) {
+        setFormData({
+          ...formData,
+          [name]: file,
+        });
+      }
+    } else {
+      setFormData({
+        ...formData,
+        [name]: e.target.value,
+      });
+    }
   };
 
   return (
-    <div className="py-44">
+    <div className="py-28">
       <form
         className="max-w-md mx-auto p-5 rounded border-2 shadow-lg"
         onSubmit={handleSubmit}
       >
-        <h1 className="py-3 text-center text-xl">Project</h1>
+        <h1 className="py-3 text-center text-2xl uppercase text-green-500">
+          Mùa hè xanh
+        </h1>
         <div className="relative z-0 w-full mb-5 group">
           <input
             type="text"
@@ -108,45 +126,9 @@ const PostProject = () => {
             Address
           </label>
         </div>
-        {/* <div className="relative z-0 w-full mb-5 group">
-          <input
-            type="text"
-            name="owner_name"
-            id="owner_name"
-            className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-            placeholder=" "
-            required
-            // value={FormData.owner_name}
-            // onChange={handleInputChange}
-          />
-          <label
-            htmlFor="owner_name"
-            className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-          >
-            Owner name
-          </label>
-        </div> */}
-        <div className="relative z-0 w-full mb-5 group">
-          <input
-            type="email"
-            name="contact_email"
-            id="contact_email"
-            className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-            placeholder=" "
-            required
-            onChange={handleInputChange}
-            value={FormData.contact_email}
-          />
-          <label
-            htmlFor="contact_email"
-            className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-          >
-            Contact
-          </label>
-        </div>
 
         <div className="relative z-0 w-full mb-5 group">
-          <input
+          <textarea
             type="text"
             name="description"
             id="description"
@@ -163,21 +145,21 @@ const PostProject = () => {
             Description
           </label>
         </div>
-
         <div className="grid md:grid-cols-2 md:gap-6">
           <div className="relative z-0 w-full mb-5 group">
             <input
               type="number"
-              name="number_of_students"
-              id="number_of_students"
+              name="max_project_members"
+              id="max_project_members"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
               required
               onChange={handleInputChange}
-              value={FormData.number_of_students}
+              min="0"
+              value={FormData.max_project_members}
             />
             <label
-              htmlFor="number_of_students"
+              htmlFor="max_project_members"
               className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
               Number of students
@@ -185,38 +167,57 @@ const PostProject = () => {
           </div>
           <div className="relative z-0 w-full mb-5 group">
             <input
-              type="text"
-              name="status"
-              id="status"
-              // value="Pending"
+              type="number"
+              name="max_school_registrations_members"
+              id="max_school_registrations_members"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
               required
               onChange={handleInputChange}
-              value={FormData.status}
+              min="0"
+              value={FormData.max_school_registrations_members}
             />
             <label
-              htmlFor="status"
+              htmlFor="max_school_registrations_members"
               className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
-              Status
+              Max school members
             </label>
           </div>
+        </div>
+
+        <div className="relative z-0 w-full mb-5 group">
+          <input
+            type="text"
+            name="status"
+            id="status"
+            className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+            placeholder=" "
+            required
+            onChange={handleInputChange}
+            value="pending"
+          />
+          <label
+            htmlFor="status"
+            className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+          >
+            Status
+          </label>
         </div>
         <div className="grid md:grid-cols-2 md:gap-6">
           <div className="relative z-0 w-full mb-5 group">
             <input
               type="date"
-              name="time_start"
-              id="time_start"
+              name="date_start"
+              id="date_start"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
               required
-              value={FormData.time_start}
+              value={FormData.date_start}
               onChange={handleInputChange}
             />
             <label
-              htmlFor="time_start"
+              htmlFor="date_start"
               className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
               Start time
@@ -225,23 +226,23 @@ const PostProject = () => {
           <div className="relative z-0 w-full mb-5 group">
             <input
               type="date"
-              name="end_time"
-              id="end_time"
+              name="date_end"
+              id="date_end"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
               required
-              value={FormData.end_time}
+              value={FormData.date_end}
               onChange={handleInputChange}
             />
             <label
-              htmlFor="end_time"
+              htmlFor="date_end"
               className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
               End time
             </label>
           </div>
         </div>
-        {/* 
+
         <div className="relative z-0 w-full mb-5 group">
           <input
             type="file"
@@ -251,7 +252,7 @@ const PostProject = () => {
             placeholder=" "
             required
             accept="image/*"
-            // onChange={handleInputChange}
+            onChange={handleInputChange}
           />
           <label
             htmlFor="thumbnail"
@@ -259,7 +260,7 @@ const PostProject = () => {
           >
             Thumbnail
           </label>
-        </div> */}
+        </div>
         <div className="flex flex-row-reverse space-x-4 space-x-reverse">
           <button
             type="submit"
