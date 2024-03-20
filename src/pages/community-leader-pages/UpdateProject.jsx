@@ -150,7 +150,7 @@ const UpdateProject = ({ projectDetail }) => {
           <select
             id="status"
             name="status"
-            className="block w-full mt-1 text-sm border-gray-300 focus:ring-blue-500 focus:border-blue-500 border-gray-300 rounded-md"
+            className="block w-full mt-1 text-sm  focus:ring-blue-500 focus:border-blue-500 border-gray-300 rounded-md"
             value={formData.status}
             onChange={handleInputChange}
           >
