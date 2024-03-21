@@ -4,11 +4,18 @@ import { mock_projects } from "~/const";
 import images from "~/assets";
 import axios from "~/api/axios";
 import { useAuth } from "~/hooks";
+import Pagination from "~/components/ProjectCardItem/Pagination";
+const projectFilter = ["all_projects", "university_projects"];
 
 const Home = () => {
   const [projects, setProjects] = useState([]);
   const [filter, setFilter] = useState("all_projects");
   const { auth } = useAuth();
+
+  //Pagination
+  const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postPerPage, setPostPerPage] = useState(5);
 
   useEffect(() => {
     if (filter === "all_projects") {
@@ -30,12 +37,17 @@ const Home = () => {
         })
         .catch(() => {
           // Catch for test mock API
-          setProjects(mock_projects);
+          setProjects(mock_projects.data);
         });
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filter]);
+
+  // Get current posts
+  const indexOfLastPost = currentPage * postPerPage
+  const indexOfFirstPost = indexOfLastPost - postPerPage
+  const currentPosts = projects.slice(indexOfFirstPost, indexOfLastPost)
+  const paginate = pageNumber => setCurrentPage(pageNumber);
 
   return (
     <div className="wrapper px-20 py-10 border-4">
@@ -55,7 +67,7 @@ const Home = () => {
             type="search"
             id="default-search"
             className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Search Mockups, Logos..."
+            placeholder="Search Projects"
             required
           />
           <button
@@ -65,12 +77,14 @@ const Home = () => {
             Search
           </button>
         </div>
+
       </form>
 
       {/* Category */}
       <div className="flex mb-4 pl-6 border-cyan-100">
         <input
           id="all_projects"
+          defaultChecked
           type="radio"
           name="project_type"
           className="w-6 h-6 border-gray-300 focus:ring-2 focus:ring-blue-300"
@@ -102,7 +116,8 @@ const Home = () => {
 
       {/* load projects here */}
       <div className="relative overflow-x-auto sm:rounded-lg mt-5">
-        <ProjectItem activities={projects} />
+        <ProjectItem activities={currentPosts} />
+        <Pagination postsPerPage={postPerPage} totalPosts={projects.length} paginate={paginate} />
       </div>
     </div>
   );
