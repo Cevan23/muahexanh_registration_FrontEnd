@@ -26,7 +26,6 @@ const Home = () => {
         })
         .catch(() => {
           console.log.error("Get all projects failed");
-          set;
         });
     } else if (filterProject === "Enrolled Projects") {
       axios

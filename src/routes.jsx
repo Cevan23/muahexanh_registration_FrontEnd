@@ -1,7 +1,6 @@
 import { Login, StudentHome, UniversityHome } from "./pages";
 import {
   Project,
-  ProjectDetail,
   PostProject,
   UpdateProject,
 } from "./pages/community-leader-pages";
@@ -9,11 +8,13 @@ import Register from "./pages/Register";
 import { Profile } from "./components";
 import StudentProjectDetail from "./pages/student-pages/StudentProjectDetail";
 import UniversityProjectDetail from "./pages/university-admin-pages/UniversityProjectDetail";
+import { CommunityLeaderProjectDetail } from "./pages/community-leader-pages";
 
 const publicRoutes = [
   { path: "/register", component: Register, layout: null },
-  { path: "/", component: Login, layout: null },
+
   { path: "/login", component: Login, layout: null },
+  { path: "/", component: Login, layout: null },
 ];
 
 const privateRoutes = [
@@ -36,7 +37,7 @@ const privateRoutes = [
   { path: "/community-leader", component: Project },
   {
     path: "/community-leader/project-detail/:projectId",
-    component: ProjectDetail,
+    component: CommunityLeaderProjectDetail,
   },
   { path: "/community-leader/form", component: PostProject },
   { path: "/community-leader/:id/update", component: UpdateProject },

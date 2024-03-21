@@ -61,6 +61,10 @@ const StudentProjectDetail = () => {
                   </h1>
                 </div>
               </div>
+
+              <Button onClick={(e) => handleEnrollProject(e)}>
+                Enroll Project
+              </Button>
             </div>
           </div>
           <div className="px-20 py-5">

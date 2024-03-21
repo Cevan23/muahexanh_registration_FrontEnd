@@ -25,7 +25,9 @@ const Header = () => {
         <div className="flex items-center justify-end mr-4 sm:mr-0">
           <div className="sm:block grid mr-2">
             <div className="text-sm">{auth.role}</div>
-            <div className="font-bold text-lg">{auth.fullName}</div>
+            {auth.role === "CommunityLeader" ? (
+              <div className="font-bold text-lg">{auth.fullName}</div>
+            ) : <div className="font-bold text-lg">{auth.full_name}</div>}
           </div>
 
           <div>
