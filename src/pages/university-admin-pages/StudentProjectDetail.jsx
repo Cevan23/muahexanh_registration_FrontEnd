@@ -18,6 +18,7 @@ const UniversityProjectDetail = () => {
       })
       .catch(() => setProjectDetail(mock_projectDetail));
   }, [projectId]);
+
   return (
     <div>
       {projectDetail && (

@@ -22,6 +22,8 @@ const StudentProjectDetail = () => {
   }, [projectId]);
 
   const handleEnrollProject = (e) => {
+    e.preventDefault();
+
     axios
       .post(`/api/students/applyProject`, {
         projectId: projectId.toString(),
