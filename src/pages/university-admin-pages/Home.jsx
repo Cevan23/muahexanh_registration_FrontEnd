@@ -25,11 +25,12 @@ const Home = () => {
         .get(`/api/projects`)
         .then((res) => {
           if (debounced !== "") {
-            const filteredProjects = res.data.filter((project) =>
-              project.title.toLowerCase().includes(debounced.toLowerCase())
+            console.log(debounced);
+            setProjects((prev) =>
+              prev.filter((project) =>
+                project.title.toLowerCase().includes(debounced.toLowerCase())
+              )
             );
-
-            setProjects(filteredProjects);
           } else {
             setProjects(res.data);
           }
@@ -43,12 +44,11 @@ const Home = () => {
         .get(`/api/projects/university/${auth.id}`)
         .then((res) => {
           if (debounced !== "") {
-            const filteredProjects = [...res.data.data.projects].filter(
-              (project) =>
+            setProjects((prev) =>
+              prev.filter((project) =>
                 project.title.toLowerCase().includes(debounced.toLowerCase())
+              )
             );
-
-            setProjects(filteredProjects);
           } else {
             setProjects(res.data.data.projects);
           }
