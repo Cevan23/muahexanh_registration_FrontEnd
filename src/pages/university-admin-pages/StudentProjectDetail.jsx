@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import { mock_projectDetail } from "~/const";
 import images from "~/assets";
 
-const StudentProjectDetail = () => {
+const UniversityProjectDetail = () => {
   const { projectId } = useParams();
   const [projectDetail, setProjectDetail] = useState();
 
@@ -72,4 +72,4 @@ const StudentProjectDetail = () => {
   );
 };
 
-export default StudentProjectDetail;
+export default UniversityProjectDetail;
