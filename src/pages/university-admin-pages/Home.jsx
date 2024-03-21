@@ -22,6 +22,7 @@ const Home = () => {
       axios
         .get(`/api/projects`)
         .then((res) => {
+          console.log(res.data);
           setProjects(res.data);
         })
         .catch(() => {
@@ -33,7 +34,7 @@ const Home = () => {
         .get(`/api/projects/university/${auth.id}`)
         .then((res) => {
           console.log(res.data);
-          setProjects(res.data.data.projects);
+          setProjects(res.data);
         })
         .catch(() => {
           // Catch for test mock API
@@ -44,10 +45,10 @@ const Home = () => {
   }, [filter]);
 
   // Get current posts
-  const indexOfLastPost = currentPage * postPerPage
-  const indexOfFirstPost = indexOfLastPost - postPerPage
-  const currentPosts = projects.slice(indexOfFirstPost, indexOfLastPost)
-  const paginate = pageNumber => setCurrentPage(pageNumber);
+  const indexOfLastPost = currentPage * postPerPage;
+  const indexOfFirstPost = indexOfLastPost - postPerPage;
+  const currentPosts = projects.slice(indexOfFirstPost, indexOfLastPost);
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <div className="wrapper px-20 py-10 border-4">
@@ -77,7 +78,6 @@ const Home = () => {
             Search
           </button>
         </div>
-
       </form>
 
       {/* Category */}
@@ -117,7 +117,11 @@ const Home = () => {
       {/* load projects here */}
       <div className="relative overflow-x-auto sm:rounded-lg mt-5">
         <ProjectItem activities={currentPosts} />
-        <Pagination postsPerPage={postPerPage} totalPosts={projects.length} paginate={paginate} />
+        <Pagination
+          postsPerPage={postPerPage}
+          totalPosts={projects.length}
+          paginate={paginate}
+        />
       </div>
     </div>
   );
