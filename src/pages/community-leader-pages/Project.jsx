@@ -33,11 +33,12 @@ const Project = () => {
         });
     else
       setProjects((prev) => {
-        const filteredProjects = prev.filter((project) =>
-          project.title.toLowerCase().includes(debounced.toLowerCase())
-        );
+        const filteredProjects = prev.filter((project) => {
+          return project.title
+            .toLowerCase()
+            .includes(debounced.toLowerCase().toString());
+        });
 
-        console.log(filteredProjects);
         setIsLoading(false);
         return [...filteredProjects];
       });
