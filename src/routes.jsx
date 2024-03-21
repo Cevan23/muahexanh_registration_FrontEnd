@@ -11,10 +11,10 @@ import { Profile } from "./components";
 const publicRoutes = [
   { path: "/register", component: Register, layout: null },
   { path: "/", component: Login, layout: null },
-  { path: "profile/:id", component: Profile }, //Test route profile sau này sẽ làm component của 3 Role
 ];
 
 const privateRoutes = [
+  { path: "profile/:id", component: Profile },
   //University route
   { path: "/university", component: UniversityHome },
   {

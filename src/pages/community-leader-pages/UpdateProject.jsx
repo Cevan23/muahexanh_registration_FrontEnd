@@ -10,7 +10,7 @@ const UpdateProject = ({ projectDetail }) => {
   const handleSubmitUpdate = async (e) => {
     e.preventDefault();
     const postData = new FormData();
-    Object.keys(formData).forEach((key) => {
+    Object.keys(formData).forEach((key) => {  
       postData.append(key, formData[key]);
     });
     try {

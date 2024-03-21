@@ -92,7 +92,7 @@ const Profile = () => {
             <div className="flex flex-row gap-2 mt-2">
               <div className="inline-flex gap-2 items-center justify-center">
                 <div className="p-1 bg-white flex items-center justify-center rounded-full">
-                  <img src="../job.svg" style={{ height: "25px" }} />
+                  <img src="../phone.svg" style={{ height: "25px" }} />
                 </div>
                 <p className="text-white">{profile.phone_number}</p>
               </div>
