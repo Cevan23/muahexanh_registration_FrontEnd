@@ -38,7 +38,7 @@ const PostProject = () => {
       postFormData.append("status", "pending");
       postFormData.append("date_start", formData.date_start);
       postFormData.append("date_end", formData.date_end);
-      postFormData.append("img_root", formData.thumbnail.name);
+      postFormData.append("img_root", "null");
     }
     console.log("start data: ", formData.date_start);
     console.log("end data: ", formData.date_start);
@@ -74,20 +74,11 @@ const PostProject = () => {
 
   const handleInputChange = (e) => {
     const { type, name } = e.target;
-    if (type === "file") {
-      const file = e.target.files[0];
-      if (file) {
-        setFormData({
-          ...formData,
-          [name]: file,
-        });
-      }
-    } else {
-      setFormData({
-        ...formData,
-        [name]: e.target.value,
-      });
-    }
+
+    setFormData({
+      ...formData,
+      [name]: e.target.value,
+    });
   };
 
   return (

@@ -16,6 +16,7 @@ const publicRoutes = [
 ];
 
 const privateRoutes = [
+  { path: "profile/:id", component: Profile },
   //University route
   { path: "/university", component: UniversityHome },
   {
