@@ -50,6 +50,7 @@ const Login = () => {
         setCookie("userCookie", JSON.stringify(res.data.data));
         setAuth({ ...res.data.data });
         setIsLoggedIn(true);
+        
 
         // Redirect to community leader page
         if (formData.role.toLowerCase() === "communityleader")
