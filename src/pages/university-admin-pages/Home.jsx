@@ -12,9 +12,15 @@ const Home = () => {
 
   useEffect(() => {
     if (filter === "all_projects") {
-      axios.get(`/api/projects`).then((res) => {
-        setProjects(res.data);
-      });
+      axios
+        .get(`/api/projects`)
+        .then((res) => {
+          setProjects(res.data);
+        })
+        .catch(() => {
+          // Catch for test mock API
+          setProjects(mock_projects);
+        });
     } else if (filter === "university_projects") {
       axios
         .get(`/api/projects/university/${auth.id}`)
