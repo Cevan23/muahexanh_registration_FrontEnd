@@ -6,7 +6,7 @@ import { mock_projectDetail } from "~/const";
 import images from "~/assets";
 import { useAuth } from "~/hooks";
 
-const StudentProjectDetail = () => {
+const UniversityProjectDetail = () => {
   const { projectId } = useParams();
   const [projectDetail, setProjectDetail] = useState();
   const [warning, setWarning] = useState();
@@ -24,11 +24,11 @@ const StudentProjectDetail = () => {
 
   function apply() {
     const formData ={
-      "studentId": auth.id,
+      "universityId": auth.id,
       "projectId": projectId
     }
     axios
-      .post('/api/students/applyProject', formData)
+      .post('/api/university/applyProject', formData)
       .then((res) => {
         console.log(formData);
         setWarning(<div className="w-full text-center mx-auto">Added Successfully!</div>)
@@ -92,4 +92,4 @@ const StudentProjectDetail = () => {
   );
 };
 
-export default StudentProjectDetail;
+export default UniversityProjectDetail;
