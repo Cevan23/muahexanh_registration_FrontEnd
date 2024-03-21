@@ -23,7 +23,7 @@ const StudentProjectDetail = () => {
   }, [projectId]);
 
   function apply() {
-    const formData ={
+    const formData = {
       "studentId": auth.id,
       "projectId": projectId
     }
@@ -62,9 +62,6 @@ const StudentProjectDetail = () => {
                 </div>
               </div>
 
-              <Button onClick={(e) => handleEnrollProject(e)}>
-                Enroll Project
-              </Button>
             </div>
           </div>
           <div className="px-20 py-5">
