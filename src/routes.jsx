@@ -26,6 +26,10 @@ const privateRoutes = [
 
   //Student-route
   { path: "/student", component: StudentHome },
+  {
+    path: "/student/project-detail/:projectId",
+    component: ProjectDetail,
+  },
 
   //Community leader route
   { path: "/community-leader", component: Project },

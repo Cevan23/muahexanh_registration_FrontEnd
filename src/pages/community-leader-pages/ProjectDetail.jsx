@@ -15,17 +15,27 @@ const ProjectDetail = () => {
 
   useEffect(() => {
     //Mai mot truyen leader id zo so 1
-    axios
-      .get(`/api/projects/getProjectDetail/`, {
-        params: {
-          leaderId: auth.id,
-          projectId: projectId,
-        },
-      })
-      .then((res) => {
-        setProjectDetail(res.data.data);
-      })
-      .catch(() => setProjectDetail(mock_projectDetail));
+    if (auth.role === "community_leader") {
+      axios
+        .get(`/api/projects/`, {
+          params: {
+            leaderId: auth.id,
+            projectId: projectId,
+          },
+        })
+        .then((res) => {
+          setProjectDetail(res.data.data);
+        })
+        .catch(() => setProjectDetail(mock_projectDetail));
+    } else {
+      axios
+        .get(`/api/projects/${projectId}`)
+        .then((res) => {
+          console.log(res.data);
+          setProjectDetail(res.data.data);
+        })
+        .catch(() => setProjectDetail(mock_projectDetail));
+    }
   }, []);
 
   return (
@@ -44,7 +54,7 @@ const ProjectDetail = () => {
                 <div className="flex justify-between font-bold">
                   <h1>{projectDetail.dateStart}</h1>
                   <h1 className="ml-5">
-                    Students Assigned: {projectDetail.students.length || 0} /
+                    Students Assigned: {100 || 0} /
                     {projectDetail.maximumStudents}
                   </h1>
                 </div>
