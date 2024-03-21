@@ -7,7 +7,7 @@ import {
 import Register from "./pages/Register";
 import { Profile } from "./components";
 import StudentProjectDetail from "./pages/student-pages/StudentProjectDetail";
-import UniversityProjectDetail from "./pages/university-admin-pages/StudentProjectDetail";
+import UniversityProjectDetail from "./pages/university-admin-pages/UniversityProjectDetail";
 import { CommunityLeaderProjectDetail } from "./pages/community-leader-pages";
 
 const publicRoutes = [
