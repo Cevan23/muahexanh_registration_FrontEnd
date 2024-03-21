@@ -22,11 +22,9 @@ const StudentProjectDetail = () => {
       .catch(() => setProjectDetail(mock_projectDetail));
   }, [projectId]);
 
-  function apply() {
-    const formData ={
-      "studentId": auth.id,
-      "projectId": projectId
-    }
+  const handleEnrollProject = (e) => {
+    e.preventDefault();
+
     axios
       .post('/api/students/applyProject', formData)
       .then((res) => {

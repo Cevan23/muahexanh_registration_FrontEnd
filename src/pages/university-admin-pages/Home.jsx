@@ -3,7 +3,7 @@ import { ProjectItem } from "~/components";
 import { mock_projects } from "~/const";
 import images from "~/assets";
 import axios from "~/api/axios";
-import { useAuth } from "~/hooks";
+import { useAuth, useDebounce } from "~/hooks";
 import Pagination from "~/components/ProjectCardItem/Pagination";
 const projectFilter = ["all_projects", "university_projects"];
 
@@ -16,6 +16,8 @@ const Home = () => {
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [postPerPage, setPostPerPage] = useState(5);
+  const [searchValue, setSearchValue] = useState("");
+  const debounced = useDebounce(searchValue, 500);
 
   useEffect(() => {
     if (filter === "all_projects") {
@@ -24,6 +26,15 @@ const Home = () => {
         .then((res) => {
           console.log(res.data);
           setProjects(res.data);
+          if (debounced !== "") {
+            const filteredProjects = res.data.filter((project) =>
+              project.title.toLowerCase().includes(debounced.toLowerCase())
+            );
+
+            setProjects(filteredProjects);
+          } else {
+            setProjects(res.data);
+          }
         })
         .catch(() => {
           // Catch for test mock API
@@ -35,6 +46,15 @@ const Home = () => {
         .then((res) => {
           console.log(res.data);
           setProjects(res.data);
+          if (debounced !== "") {
+            const filteredProjects = [...res.data].filter((project) =>
+              project.title.toLowerCase().includes(debounced.toLowerCase())
+            );
+
+            setProjects(filteredProjects);
+          } else {
+            setProjects(res.data);
+          }
         })
         .catch(() => {
           // Catch for test mock API
@@ -42,7 +62,7 @@ const Home = () => {
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filter]);
+  }, [filter, debounced]);
 
   // Get current posts
   const indexOfLastPost = currentPage * postPerPage;
@@ -69,14 +89,10 @@ const Home = () => {
             id="default-search"
             className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
             placeholder="Search Projects"
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
             required
           />
-          <button
-            type="submit"
-            className="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2"
-          >
-            Search
-          </button>
         </div>
       </form>
 
