@@ -18,16 +18,26 @@ const Header = () => {
   return (
     <>
       <div className="px-20 py-2 flex justify-between">
-      <Link to={auth.role === "CommunityLeader" ? "/community-leader" : auth.role === "student" ? "/student" : "/university"}>
-    <img src={images.logo} className="w-[4.2rem] h-20" alt="Logo" />
-      </Link>
+        <Link
+          to={
+            auth.role === "CommunityLeader"
+              ? "/community-leader"
+              : auth.role === "student"
+              ? "/student"
+              : "/university"
+          }
+        >
+          <img src={images.logo} className="w-[4.2rem] h-20" alt="Logo" />
+        </Link>
 
         <div className="flex items-center justify-end mr-4 sm:mr-0">
           <div className="sm:block grid mr-2">
             <div className="text-sm">{auth.role}</div>
-            {auth.role === "CommunityLeader" ? (
+            {auth.role === "Student" ? (
+              <div className="font-bold text-lg">{auth.full_name}</div>
+            ) : (
               <div className="font-bold text-lg">{auth.fullName}</div>
-            ) : <div className="font-bold text-lg">{auth.full_name}</div>}
+            )}
           </div>
 
           <div>
