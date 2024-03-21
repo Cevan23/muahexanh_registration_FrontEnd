@@ -71,7 +71,7 @@ const Profile = () => {
               {profile.full_name}
             </p>
           </div>
-          <div className="img w-[180px] aspect-square bg-gray-100 z-40 rounded-md"></div>
+          <img className="img w-[180px] aspect-square bg-gray-100 z-40 rounded-md object-cover" src="https://pic.re/image"></img>
           <div className="container z-40 info">
             <div className="flex-row gap-2">
               <div className="inline-flex gap-2 items-center justify-center">

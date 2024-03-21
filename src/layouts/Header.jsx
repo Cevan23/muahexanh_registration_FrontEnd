@@ -32,10 +32,11 @@ const Header = () => {
 
           <div>
             <button onClick={() => setShowOptions((prev) => !prev)}>
-              <div
+              <img
                 id="avatar"
-                className="bg-black rounded-full w-10 h-10"
-              ></div>
+                className="rounded-full w-10 h-10 object-cover"
+                src="https://pic.re/image"
+              ></img>
             </button>
 
             <div

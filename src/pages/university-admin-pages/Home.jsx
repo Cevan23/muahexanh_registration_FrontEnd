@@ -23,6 +23,7 @@ const Home = () => {
         .get(`/api/projects`)
         .then((res) => {
           setProjects(res.data);
+          console.log(res.data)
         })
         .catch(() => {
           // Catch for test mock API
