@@ -24,6 +24,8 @@ const Home = () => {
       axios
         .get(`/api/projects`)
         .then((res) => {
+          console.log(res.data);
+          setProjects(res.data);
           if (debounced !== "") {
             console.log(debounced);
             setProjects((prev) =>
@@ -43,6 +45,8 @@ const Home = () => {
       axios
         .get(`/api/projects/university/${auth.id}`)
         .then((res) => {
+          console.log(res.data);
+          setProjects(res.data);
           if (debounced !== "") {
             setProjects((prev) =>
               prev.filter((project) =>
@@ -50,7 +54,7 @@ const Home = () => {
               )
             );
           } else {
-            setProjects(res.data.data.projects);
+            setProjects(res.data);
           }
         })
         .catch(() => {
