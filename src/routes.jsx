@@ -12,8 +12,9 @@ import { CommunityLeaderProjectDetail } from "./pages/community-leader-pages";
 
 const publicRoutes = [
   { path: "/register", component: Register, layout: null },
-  { path: "/", component: Login, layout: null },
+
   { path: "/login", component: Login, layout: null },
+  { path: "/", component: Login, layout: null },
 ];
 
 const privateRoutes = [

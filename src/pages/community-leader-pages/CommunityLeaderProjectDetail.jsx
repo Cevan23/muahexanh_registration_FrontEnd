@@ -18,7 +18,7 @@ const CommunityLeaderProjectDetail = () => {
     if (auth.role === "CommunityLeader") {
       axios
         .get(`/api/projects/getProjectDetail/`, {
-          params: { 
+          params: {
             leaderId: auth.id,
             projectId: projectId,
           },
@@ -28,7 +28,6 @@ const CommunityLeaderProjectDetail = () => {
         })
         .catch(() => setProjectDetail(mock_projectDetail));
     } else {
-  
       axios
         .get(`/api/projects/${projectId}`)
         .then((res) => {
@@ -58,7 +57,8 @@ const CommunityLeaderProjectDetail = () => {
                       {projectDetail.leader_contact}
                     </h1>
                     <h1 className="text-2xl font-bold">
-                    Status: {projectDetail.projectInformation.status.toUpperCase()}
+                      Status:{" "}
+                      {projectDetail.projectInformation.status.toUpperCase()}
                     </h1>
                     <div className="flex justify-between font-bold">
                       <h1>{projectDetail.projectInformation.dateStart}</h1>
