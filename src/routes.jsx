@@ -6,12 +6,12 @@ import {
   UpdateProject,
 } from "./pages/community-leader-pages";
 import Register from "./pages/Register";
-import Profile from "./pages/community-leader-pages/components/Profile/Profile";
+import { Profile } from "./components";
 
 const publicRoutes = [
   { path: "/register", component: Register, layout: null },
-  { path: "/login", component: Login, layout: null },
-  { path: "/:id", component: Profile }, //Test route profile sau này sẽ làm component của 3 Role
+  { path: "/", component: Login, layout: null },
+  { path: "profile/:id", component: Profile }, //Test route profile sau này sẽ làm component của 3 Role
 ];
 
 const privateRoutes = [

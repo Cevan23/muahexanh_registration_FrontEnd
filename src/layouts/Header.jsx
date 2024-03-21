@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useCookies } from "react-cookie";
+import { Link, redirect } from "react-router-dom";
 import images from "~/assets";
 import { useAuth } from "~/hooks";
 
@@ -11,7 +12,7 @@ const Header = () => {
 
   const HandleSubmit = () => {
     removeCookie("userCookie");
-    window.location.reload();
+    redirect("/");
   };
 
   return (
@@ -52,6 +53,17 @@ const Header = () => {
                       Log out
                     </button>
                   </form>
+                </li>
+                <li>
+                  <Link to={`/profile/${auth.id}`}>
+                    <button
+                      className="mt-4 focus:ring transform transition hover:scale-105 duration-300 ease-in-out cursor-pointer w-full text-left"
+                      type="submit"
+                    >
+                      <i className="fa-solid fa-arrow-right-from-bracket mr-3 text-red-800"></i>
+                      Profile
+                    </button>
+                  </Link>
                 </li>
               </ul>
             </div>
