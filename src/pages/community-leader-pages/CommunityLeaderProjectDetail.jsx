@@ -215,7 +215,8 @@ const CommunityLeaderProjectDetail = () => {
 
                   <div>
                     {isStudentDetail && (
-                      <div className="fixed z-1000 inset-0 bg-opacity-50 bg-black">
+                      <div className="fixed z-1000 inset-0 bg-opacity-50 bg-white">
+                        <div className="mt-12 ml-8 text-2xl font-bold">Chi tiết học sinh</div>
                         <div className="grid grid-cols-2 mx-72 my-40 py-12 px-8 bg-white h-fit">
                           <div className="">
                             <dl className="max-w-[400px] text-gray-900 divide-y divide-gray-400 ">
@@ -275,7 +276,7 @@ const CommunityLeaderProjectDetail = () => {
                           </div>
                         </div>
                         <div
-                          className="absolute top-5 right-10 text-2xl font-bold text-[#fff] cursor-pointer"
+                          className="absolute top-5 right-10 text-2xl font-bold text-black cursor-pointer"
                           onClick={() => {
                             setIsStudentDetail(false);
                           }}

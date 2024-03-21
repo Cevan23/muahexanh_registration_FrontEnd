@@ -7,6 +7,10 @@ module.exports = withMT({
   content: ["./src/**/*.{js,jsx,ts,tsx,html}", "./public/index.html"],
   theme: {
     extend: {
+      backgroundColor: theme => ({
+        ...theme('colors'),
+        'black-50': 'rgba(0, 0, 0, 0.5)',
+      }),
       colors: {
         blur: "rgba(0, 0, 0, 0.5)",
         dimBlack: "rgba(26,26,26)",
