@@ -9,9 +9,8 @@ const projectFilter = ["all_projects", "university_projects"];
 
 const Home = () => {
   const [projects, setProjects] = useState([]);
-  const [selectedProject, setSelectedProject] = useState(projectFilter[0]);
+  const [filter, setFilter] = useState("all_projects");
   const { auth } = useAuth();
-  console.log(auth);
 
   //Pagination
   const [loading, setLoading] = useState(false);
@@ -19,30 +18,25 @@ const Home = () => {
   const [postPerPage, setPostPerPage] = useState(5);
 
   useEffect(() => {
-    if (selectedProject === "all_projects")
-      axios
-        .get(`/api/projects`)
-        .then((res) => {
-          console.log(res.data);
-          setProjects(res.data);
-        })
-        .catch(() => {
-          // Catch for test mock API
-          setProjects(mock_projects);
-        });
-    else {
+    if (filter === "all_projects") {
+      axios.get(`/api/projects`).then((res) => {
+        setProjects(res.data);
+      });
+    } else if (filter === "university_projects") {
       axios
         .get(`/api/projects/university/${auth.id}`)
         .then((res) => {
           console.log(res.data);
-          setProjects(res.data);
+          setProjects(res.data.data.projects);
         })
         .catch(() => {
           // Catch for test mock API
           setProjects(mock_projects);
         });
     }
-  }, [selectedProject]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filter]);
 
   // Get current posts
   const indexOfLastPost = currentPage * postPerPage
@@ -68,7 +62,7 @@ const Home = () => {
             type="search"
             id="default-search"
             className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Search Mockups, Logos..."
+            placeholder="Search Projects"
             required
           />
           <button
@@ -80,18 +74,17 @@ const Home = () => {
         </div>
 
       </form>
+
+      {/* Category */}
       <div className="flex mb-4 pl-6 border-cyan-100">
         <input
           id="all_projects"
+          defaultChecked
           type="radio"
-          name="countries"
-          // value="USA"
+          name="project_type"
           className="w-6 h-6 border-gray-300 focus:ring-2 focus:ring-blue-300"
-          onChange={() => {
-            setSelectedProject(projectFilter[0]);
-          }}
-          checked
-        // onClick={() => handleFilter(projectFilter[0])}
+          value="all_projects"
+          onChange={(e) => setFilter(e.target.value)}
         />
         <label
           htmlFor="all_projects"
@@ -103,13 +96,10 @@ const Home = () => {
         <input
           id="university_projects"
           type="radio"
-          name="countries"
-          // value="USA"
+          name="project_type"
+          value="university_projects"
           className="w-6 h-6 border-gray-300 focus:ring-2 focus:ring-blue-300"
-          onChange={() => {
-            setSelectedProject(projectFilter[1]);
-          }}
-        // onClick={() => handleFilter(projectFilter[1])}
+          onChange={(e) => setFilter(e.target.value)}
         />
         <label
           htmlFor="university_projects"

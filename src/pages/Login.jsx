@@ -66,7 +66,6 @@ const Login = () => {
 
   function HandleChange(event) {
     const { value, name } = event.target;
-    console.log(name, value);
     setFormData({
       ...formData,
       [name]: value,

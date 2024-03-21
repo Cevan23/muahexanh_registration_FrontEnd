@@ -6,21 +6,25 @@ import {
   UpdateProject,
 } from "./pages/community-leader-pages";
 import Register from "./pages/Register";
-import Profile from "./pages/community-leader-pages/components/Profile/Profile";
+import { Profile } from "./components";
 
 const publicRoutes = [
   { path: "/register", component: Register, layout: null },
-  { path: "/login", component: Login, layout: null },
-  { path: "/:id", component: Profile }, //Test route profile sau này sẽ làm component của 3 Role
-
-  //University route
-  { path: "/university", component: UniversityHome },
-
-  //Student-route
-  { path: "/student", component: StudentHome },
+  { path: "/", component: Login, layout: null },
 ];
 
 const privateRoutes = [
+  { path: "profile/:id", component: Profile },
+  //University route
+  { path: "/university", component: UniversityHome },
+  {
+    path: "/university/project-detail/:projectId",
+    component: ProjectDetail,
+  },
+
+  //Student-route
+  { path: "/student", component: StudentHome },
+
   //Community leader route
   { path: "/community-leader", component: Project },
   {
