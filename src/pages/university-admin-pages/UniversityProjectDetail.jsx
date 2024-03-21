@@ -23,17 +23,21 @@ const UniversityProjectDetail = () => {
   }, [projectId]);
 
   function apply() {
-    const formData ={
-      "universityId": auth.id,
-      "projectId": projectId
-    }
+    const formData = {
+      universityId: auth.id,
+      projectId: projectId,
+    };
     axios
-      .post('/api/university/applyProject', formData)
+      .post("/api/university/applyProject", formData)
       .then((res) => {
         console.log(formData);
-        setWarning(<div className="w-full text-center mx-auto">Added Successfully!</div>)
+        setWarning(
+          <div className="w-full text-center mx-auto">{res.data}</div>
+        );
       })
-      .catch(() => setWarning(<div className="w-full text-center mx-auto">Failed!</div>));
+      .catch(() =>
+        setWarning(<div className="w-full text-center mx-auto">Failed!</div>)
+      );
   }
 
   return (
@@ -71,7 +75,9 @@ const UniversityProjectDetail = () => {
               {projectDetail.projectInformation.description}
             </div>
           </div>
-          <Button className="mx-auto w-max" onClick={apply}>Enroll</Button>
+          <Button className="mx-auto w-max" onClick={apply}>
+            Enroll
+          </Button>
 
           {/* <div className="mx-20 py-8 px-12 rounded-md bg-blue-gray-100 mb-40">
             <div className="text-xl font-bold mb-4">

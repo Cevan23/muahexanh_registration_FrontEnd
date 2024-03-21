@@ -24,19 +24,20 @@ const StudentProjectDetail = () => {
 
   function apply() {
     const formData = {
-      "studentId": auth.id,
-      "projectId": projectId
-    }
-  const handleEnrollProject = (e) => {
-    e.preventDefault();
+      studentId: auth.id,
+      projectId: projectId,
+    };
 
     axios
-      .post('/api/students/applyProject', formData)
+      .post("/api/students/applyProject", formData)
       .then((res) => {
-        console.log(formData);
-        setWarning(<div className="w-full text-center mx-auto">Added Successfully!</div>)
+        setWarning(
+          <div className="w-full text-center mx-auto">{res.data}</div>
+        );
       })
-      .catch(() => setWarning(<div className="w-full text-center mx-auto">Failed!</div>));
+      .catch(() =>
+        setWarning(<div className="w-full text-center mx-auto">Failed!</div>)
+      );
   }
 
   return (
@@ -64,7 +65,6 @@ const StudentProjectDetail = () => {
                   </h1>
                 </div>
               </div>
-
             </div>
           </div>
           <div className="px-20 py-5">
@@ -75,7 +75,9 @@ const StudentProjectDetail = () => {
               {projectDetail.projectInformation.description}
             </div>
           </div>
-          <Button className="mx-auto w-max" onClick={apply}>Enroll</Button>
+          <Button className="mx-auto w-max" onClick={apply}>
+            Enroll
+          </Button>
 
           {/* <div className="mx-20 py-8 px-12 rounded-md bg-blue-gray-100 mb-40">
             <div className="text-xl font-bold mb-4">
@@ -94,6 +96,6 @@ const StudentProjectDetail = () => {
       )}
     </div>
   );
-}};
+};
 
 export default StudentProjectDetail;

@@ -6,12 +6,11 @@ const UpdateProject = ({ projectDetail }) => {
   const [notification, setNotification] = useState(false);
   const { students, ...formDataWithoutStudents } = projectDetail;
 
-
   const [formData, setFormData] = useState({ ...formDataWithoutStudents });
   const handleSubmitUpdate = async (e) => {
     e.preventDefault();
     const postData = new FormData();
-    Object.keys(formData).forEach((key) => {  
+    Object.keys(formData).forEach((key) => {
       postData.append(key, formData[key]);
     });
     try {
@@ -26,9 +25,10 @@ const UpdateProject = ({ projectDetail }) => {
         // { mode: "cors" }
       );
       setNotification(true);
+      window.location.reload();
     } catch (error) {
       console.log("Error updating form: ", error);
-      console.log(students)
+      console.log(students);
     }
   };
 
