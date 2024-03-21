@@ -15,9 +15,9 @@ const ProjectDetail = () => {
 
   useEffect(() => {
     //Mai mot truyen leader id zo so 1
-    if (auth.role === "community_leader") {
+    if (auth.role === "CommunityLeader") {
       axios
-        .get(`/api/projects/`, {
+        .get(`/api/projects/getProjectDetail/`, {
           params: {
             leaderId: auth.id,
             projectId: projectId,
@@ -28,6 +28,7 @@ const ProjectDetail = () => {
         })
         .catch(() => setProjectDetail(mock_projectDetail));
     } else {
+      console.log(auth.role);
       axios
         .get(`/api/projects/${projectId}`)
         .then((res) => {
@@ -45,21 +46,44 @@ const ProjectDetail = () => {
           <div className="w-full h-[550px]">
             <img src={images.homebanner} className="h-full w-full" />
           </div>
+
+          {/* Project data */}
           <div className="">
             <div className="flex justify-between items-center pt-5 px-20">
               <div>
-                <h1 className="text-2xl font-bold">
-                  Status: {projectDetail.status}
-                </h1>
-                <div className="flex justify-between font-bold">
-                  <h1>{projectDetail.dateStart}</h1>
-                  <h1 className="ml-5">
-                    Students Assigned: {100 || 0} /
-                    {projectDetail.maximumStudents}
-                  </h1>
-                </div>
+                {auth.role !== "CommunityLeader" ? (
+                  <>
+                    <h1>
+                      {projectDetail.leader_name} -{" "}
+                      {projectDetail.leader_contact}
+                    </h1>
+                    <h1 className="text-2xl font-bold">
+                      Status: {projectDetail.projectInformation.status}
+                    </h1>
+                    <div className="flex justify-between font-bold">
+                      <h1>{projectDetail.projectInformation.dateStart}</h1>
+                      <h1 className="ml-5">
+                        Students Assigned: {projectDetail.number_of_student} /{" "}
+                        {projectDetail.projectInformation.maxProjectMembers}
+                      </h1>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <h1 className="text-2xl font-bold">
+                      Status: {projectDetail.status}
+                    </h1>
+                    <div className="flex justify-between font-bold">
+                      <h1>{projectDetail.dateStart}</h1>
+                      <h1 className="ml-5">
+                        Students Assigned: {projectDetail.students.length} /{" "}
+                        {projectDetail.maximumStudents}
+                      </h1>
+                    </div>
+                  </>
+                )}
               </div>
-              {auth.role === "community_leader" && (
+              {auth.role === "CommunityLeader" && (
                 <Button
                   onClick={() => {
                     setIsUpdate(true);
@@ -71,12 +95,27 @@ const ProjectDetail = () => {
               )}
             </div>
           </div>
+
+          {/* Detail Project information */}
           <div className="px-20 py-5">
-            <div className="text-4xl font-bold">{projectDetail.title}</div>
-            <div className="text-xl mt-6">{projectDetail.description}</div>
+            {auth.role !== "CommunityLeader" ? (
+              <>
+                <div className="text-4xl font-bold">
+                  {projectDetail.projectInformation.title}
+                </div>
+                <div className="text-xl mt-6">
+                  {projectDetail.projectInformation.description}
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="text-4xl font-bold">{projectDetail.title}</div>
+                <div className="text-xl mt-6">{projectDetail.description}</div>
+              </>
+            )}
           </div>
 
-          {auth.role === "community_leader" && (
+          {auth.role === "CommunityLeader" && (
             <div className="mx-20 py-8 px-12 rounded-md bg-blue-gray-100 mb-40">
               <div className="text-xl font-bold mb-4">
                 Student&apos;s Requests
