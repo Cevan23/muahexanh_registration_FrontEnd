@@ -10,14 +10,14 @@ import { UpdateProject } from "..";
 const CommunityLeaderProjectDetail = () => {
   const { projectId } = useParams();
   const [projectDetail, setProjectDetail] = useState();
+  const [studentApprove, setStudentApprove] = useState([]);
   const [isUpdate, setIsUpdate] = useState(false);
   const { auth } = useAuth();
   const [isStudentDetail, setIsStudentDetail] = useState(false);
 
   useEffect(() => {
-    //Mai mot truyen leader id zo so 1
     axios
-      .get(`/api/projects/getProjectDetail/`, {
+      .get(`/api/projects/getProjectDetailStudentPending/`, {
         params: {
           leaderId: auth.id,
           projectId: projectId,
@@ -27,13 +27,24 @@ const CommunityLeaderProjectDetail = () => {
         setProjectDetail(res.data.data);
       })
       .catch(() => setProjectDetail(mock_projectDetail));
+
+    axios
+      .get(`/api/projects/getProjectDetailStudentAccepted/`, {
+        params: {
+          leaderId: auth.id,
+          projectId: projectId,
+        },
+      })
+      .then((res) => {
+        setStudentApprove(res.data.data.students);
+      })
+      .catch(() => setProjectDetail(mock_projectDetail));
   }, []);
 
   const handleApprove = (studentId) => {
     const studentIdString = String(studentId); // Convert studentId to string
     const projectIdString = String(projectId); // Convert projectId to string
 
-    console.log(studentIdString, projectIdString);
     axios
       .put(`/api/projects/approveStudent/`, null, {
         params: {
@@ -61,6 +72,7 @@ const CommunityLeaderProjectDetail = () => {
       })
       .then((res) => {
         console.log(res.data);
+        window.location.reload();
       })
       .catch((e) => console.error(e.message));
   };
@@ -90,7 +102,7 @@ const CommunityLeaderProjectDetail = () => {
                     <div className="flex justify-between font-bold">
                       <h1>{projectDetail.projectInformation.dateStart}</h1>
                       <h1 className="ml-5">
-                        Students Assigned: {projectDetail.number_of_student} /{" "}
+                        Students Assigned: {studentApprove.length} /{" "}
                         {projectDetail.projectInformation.maxProjectMembers}
                       </h1>
                     </div>
@@ -103,7 +115,7 @@ const CommunityLeaderProjectDetail = () => {
                     <div className="flex justify-between font-bold">
                       <h1>{projectDetail.dateStart}</h1>
                       <h1 className="ml-5">
-                        Students Assigned: {projectDetail.students.length} /{" "}
+                        Students Assigned: {studentApprove.length} /{" "}
                         {projectDetail.maximumStudents}
                       </h1>
                     </div>
@@ -143,7 +155,7 @@ const CommunityLeaderProjectDetail = () => {
           </div>
 
           {auth.role === "CommunityLeader" && (
-            <div className="mx-20 py-8 px-12 rounded-md bg-blue-gray-100 mb-40">
+            <div className="mx-20 py-8 px-12 rounded-md bg-blue-gray-100 mb-20">
               <div className="text-xl font-bold mb-4">
                 Danh sách học sinh muốn tham gia vào dự án
               </div>
@@ -178,7 +190,7 @@ const CommunityLeaderProjectDetail = () => {
                     <div className="flex items-center justify-center w-32">
                       {student.phoneNumber}
                     </div>
-                    <div className="flex items-center justify-center w-32">
+                    <div className="flex items-center justify-center w-36 mr-12">
                       {student.universityName}
                     </div>
                   </div>
@@ -293,6 +305,24 @@ const CommunityLeaderProjectDetail = () => {
           </div>
         </div>
       )}
+
+      <div className="mx-20 py-8 px-12 rounded-md bg-blue-gray-300 mb-40">
+        <div className="text-xl font-bold mb-4">
+          Danh sách học sinh đã được chấp thuận tham gia vào dự án
+        </div>
+        <div>{studentApprove && studentApprove.map((student) => {
+          return (
+            <div key={student.id} className="px-4 my-4 rounded-2xl bg-blue-400 flex justify-between">
+              <div className="py-3 flex justify-between gap-[5.2rem] cursor-pointer">
+                <div className="flex items-center justify-center w-52">{student.fullName}</div>
+                <div className="flex items-center justify-center w-56">{student.address}</div>
+                <div className="flex items-center justify-center w-32">{student.phoneNumber}</div>
+                <div className="flex items-center justify-center w-40 mr-12">{student.universityName}</div>
+              </div>
+            </div>
+          );
+        })}</div>
+      </div>
     </div>
   );
 };
