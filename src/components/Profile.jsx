@@ -39,6 +39,8 @@ const Profile = () => {
       }
   }, [id, auth]);
 
+  console.log(profile)
+
   return (
     <div className="antialiased">
       <div className="flex flex-col items-center justify-center h-screen">

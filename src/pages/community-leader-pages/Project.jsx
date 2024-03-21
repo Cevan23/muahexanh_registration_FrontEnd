@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import { Link } from "react-router-dom";
 import { Button } from "~/components";
 import axios from "~/api/axios";
 import { ProjectItem } from "~/components";

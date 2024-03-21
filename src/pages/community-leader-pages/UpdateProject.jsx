@@ -6,6 +6,7 @@ const UpdateProject = ({ projectDetail }) => {
   const [notification, setNotification] = useState(false);
   const { students, ...formDataWithoutStudents } = projectDetail;
 
+
   const [formData, setFormData] = useState({ ...formDataWithoutStudents });
   const handleSubmitUpdate = async (e) => {
     e.preventDefault();
@@ -27,6 +28,7 @@ const UpdateProject = ({ projectDetail }) => {
       setNotification(true);
     } catch (error) {
       console.log("Error updating form: ", error);
+      console.log(students)
     }
   };
 

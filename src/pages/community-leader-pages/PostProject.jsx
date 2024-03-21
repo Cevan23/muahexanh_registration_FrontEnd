@@ -73,7 +73,7 @@ const PostProject = () => {
   };
 
   const handleInputChange = (e) => {
-    const { type, name } = e.target;
+    const { name } = e.target;
 
     setFormData({
       ...formData,
