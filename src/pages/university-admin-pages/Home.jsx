@@ -3,7 +3,7 @@ import { ProjectItem } from "~/components";
 import { mock_projects } from "~/const";
 import images from "~/assets";
 import axios from "~/api/axios";
-import { useAuth } from "~/hooks";
+import { useAuth, useDebounce } from "~/hooks";
 import Pagination from "~/components/ProjectCardItem/Pagination";
 const projectFilter = ["all_projects", "university_projects"];
 
@@ -16,6 +16,8 @@ const Home = () => {
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [postPerPage, setPostPerPage] = useState(5);
+  const [searchValue, setSearchValue] = useState("");
+  const debounced = useDebounce(searchValue, 500);
 
   useEffect(() => {
     if (filter === "all_projects") {
@@ -24,6 +26,15 @@ const Home = () => {
         .then((res) => {
           setProjects(res.data);
           console.log(res.data)
+          if (debounced !== "") {
+            const filteredProjects = res.data.filter((project) =>
+              project.title.toLowerCase().includes(debounced.toLowerCase())
+            );
+
+            setProjects(filteredProjects);
+          } else {
+            setProjects(res.data);
+          }
         })
         .catch(() => {
           // Catch for test mock API
@@ -34,7 +45,16 @@ const Home = () => {
         .get(`/api/projects/university/${auth.id}`)
         .then((res) => {
           console.log(res.data);
-          setProjects(res.data.data.projects);
+          setProjects(res.data);
+          if (debounced !== "") {
+            const filteredProjects = [...res.data].filter((project) =>
+              project.title.toLowerCase().includes(debounced.toLowerCase())
+            );
+
+            setProjects(filteredProjects);
+          } else {
+            setProjects(res.data);
+          }
         })
         .catch(() => {
           // Catch for test mock API
@@ -42,13 +62,13 @@ const Home = () => {
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filter]);
+  }, [filter, debounced]);
 
   // Get current posts
-  const indexOfLastPost = currentPage * postPerPage
-  const indexOfFirstPost = indexOfLastPost - postPerPage
-  const currentPosts = projects.slice(indexOfFirstPost, indexOfLastPost)
-  const paginate = pageNumber => setCurrentPage(pageNumber);
+  const indexOfLastPost = currentPage * postPerPage;
+  const indexOfFirstPost = indexOfLastPost - postPerPage;
+  const currentPosts = projects.slice(indexOfFirstPost, indexOfLastPost);
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <div className="wrapper px-20 py-10 border-4">
@@ -69,16 +89,11 @@ const Home = () => {
             id="default-search"
             className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
             placeholder="Search Projects"
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
             required
           />
-          <button
-            type="submit"
-            className="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2"
-          >
-            Search
-          </button>
         </div>
-
       </form>
 
       {/* Category */}
@@ -118,7 +133,11 @@ const Home = () => {
       {/* load projects here */}
       <div className="relative overflow-x-auto sm:rounded-lg mt-5">
         <ProjectItem activities={currentPosts} />
-        <Pagination postsPerPage={postPerPage} totalPosts={projects.length} paginate={paginate} />
+        <Pagination
+          postsPerPage={postPerPage}
+          totalPosts={projects.length}
+          paginate={paginate}
+        />
       </div>
     </div>
   );

@@ -35,7 +35,7 @@ const Header = () => {
               <img
                 id="avatar"
                 className="rounded-full w-10 h-10 object-cover"
-                src="https://pic.re/image"
+                src="https://picsum.photos/700"
               ></img>
             </button>
 

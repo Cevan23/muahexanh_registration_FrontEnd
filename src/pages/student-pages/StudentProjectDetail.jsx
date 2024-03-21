@@ -27,6 +27,9 @@ const StudentProjectDetail = () => {
       "studentId": auth.id,
       "projectId": projectId
     }
+  const handleEnrollProject = (e) => {
+    e.preventDefault();
+
     axios
       .post('/api/students/applyProject', formData)
       .then((res) => {
@@ -91,6 +94,6 @@ const StudentProjectDetail = () => {
       )}
     </div>
   );
-};
+}};
 
 export default StudentProjectDetail;
