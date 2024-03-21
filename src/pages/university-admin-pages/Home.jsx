@@ -24,6 +24,8 @@ const Home = () => {
       axios
         .get(`/api/projects`)
         .then((res) => {
+          console.log(res.data);
+          setProjects(res.data);
           if (debounced !== "") {
             const filteredProjects = res.data.filter((project) =>
               project.title.toLowerCase().includes(debounced.toLowerCase())
@@ -42,15 +44,16 @@ const Home = () => {
       axios
         .get(`/api/projects/university/${auth.id}`)
         .then((res) => {
+          console.log(res.data);
+          setProjects(res.data);
           if (debounced !== "") {
-            const filteredProjects = [...res.data.data.projects].filter(
-              (project) =>
-                project.title.toLowerCase().includes(debounced.toLowerCase())
+            const filteredProjects = [...res.data].filter((project) =>
+              project.title.toLowerCase().includes(debounced.toLowerCase())
             );
 
             setProjects(filteredProjects);
           } else {
-            setProjects(res.data.data.projects);
+            setProjects(res.data);
           }
         })
         .catch(() => {
