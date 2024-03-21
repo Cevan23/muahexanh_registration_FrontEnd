@@ -27,11 +27,12 @@ const Home = () => {
           console.log(res.data);
           setProjects(res.data);
           if (debounced !== "") {
-            const filteredProjects = res.data.filter((project) =>
-              project.title.toLowerCase().includes(debounced.toLowerCase())
+            console.log(debounced);
+            setProjects((prev) =>
+              prev.filter((project) =>
+                project.title.toLowerCase().includes(debounced.toLowerCase())
+              )
             );
-
-            setProjects(filteredProjects);
           } else {
             setProjects(res.data);
           }
@@ -47,11 +48,11 @@ const Home = () => {
           console.log(res.data);
           setProjects(res.data);
           if (debounced !== "") {
-            const filteredProjects = [...res.data].filter((project) =>
-              project.title.toLowerCase().includes(debounced.toLowerCase())
+            setProjects((prev) =>
+              prev.filter((project) =>
+                project.title.toLowerCase().includes(debounced.toLowerCase())
+              )
             );
-
-            setProjects(filteredProjects);
           } else {
             setProjects(res.data);
           }
