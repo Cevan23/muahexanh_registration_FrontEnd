@@ -7,7 +7,7 @@ import images from "~/assets";
 import { useAuth } from "~/hooks";
 import { UpdateProject } from "..";
 
-const ProjectDetail = () => {
+const CommunityLeaderProjectDetail = () => {
   const { projectId } = useParams();
   const [projectDetail, setProjectDetail] = useState();
   const [isUpdate, setIsUpdate] = useState(false);
@@ -28,7 +28,6 @@ const ProjectDetail = () => {
         })
         .catch(() => setProjectDetail(mock_projectDetail));
     } else {
-      console.log(auth.role);
       axios
         .get(`/api/projects/${projectId}`)
         .then((res) => {
@@ -58,7 +57,8 @@ const ProjectDetail = () => {
                       {projectDetail.leader_contact}
                     </h1>
                     <h1 className="text-2xl font-bold">
-                      Status: {projectDetail.projectInformation.status}
+                      Status:{" "}
+                      {projectDetail.projectInformation.status.toUpperCase()}
                     </h1>
                     <div className="flex justify-between font-bold">
                       <h1>{projectDetail.projectInformation.dateStart}</h1>
@@ -162,4 +162,4 @@ const ProjectDetail = () => {
   );
 };
 
-export default ProjectDetail;
+export default CommunityLeaderProjectDetail;
