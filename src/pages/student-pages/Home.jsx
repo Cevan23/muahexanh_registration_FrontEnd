@@ -19,21 +19,21 @@ const Home = () => {
   useEffect(() => {
     if (filterProject === "All Projects") {
       axios
-        .get(`/api/projects`)
+        .get(`/api/students/getAllProjectsOfUniversity?studentId=${auth.id}`)
         .then((res) => {
           setProjects(res.data);
           setMessage("Get all projects successfully");
+          console.log(res.data);
         })
         .catch(() => {
-          console.log.error("Get all projects failed");
+          setMessage("Get all projects failed");
         });
     } else if (filterProject === "Enrolled Projects") {
       axios
         .get(`/api/students/ALlProjectOfStudent?studentId=${auth.id}`)
         .then((res) => {
           setProjects(res.data.data.projects);
-          console.log(res.data);
-
+          console.log(res.data.data.projects);
           setMessage("Get enrolled projects successfully");
         })
         .catch(() => {

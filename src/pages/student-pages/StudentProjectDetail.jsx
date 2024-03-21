@@ -9,6 +9,7 @@ import { useAuth } from "~/hooks";
 const StudentProjectDetail = () => {
   const { projectId } = useParams();
   const [projectDetail, setProjectDetail] = useState();
+  const [warning, setWarning] = useState();
   const { auth } = useAuth();
 
   useEffect(() => {
@@ -25,18 +26,13 @@ const StudentProjectDetail = () => {
     e.preventDefault();
 
     axios
-      .post(`/api/students/applyProject`, {
-        projectId: projectId.toString(),
-        studentId: auth.id.toString(),
-      })
+      .post('/api/students/applyProject', formData)
       .then((res) => {
-        console.log(res.data);
-        window.location.reload();
+        console.log(formData);
+        setWarning(<div className="w-full text-center mx-auto">Added Successfully!</div>)
       })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+      .catch(() => setWarning(<div className="w-full text-center mx-auto">Failed!</div>));
+  }
 
   return (
     <div>
@@ -45,6 +41,7 @@ const StudentProjectDetail = () => {
           <div className="w-full h-[550px]">
             <img src={images.homebanner} className="h-full w-full" />
           </div>
+          {warning}
           <div className="">
             <div className="flex justify-between items-center pt-5 px-20">
               <div>
@@ -76,6 +73,7 @@ const StudentProjectDetail = () => {
               {projectDetail.projectInformation.description}
             </div>
           </div>
+          <Button className="mx-auto w-max" onClick={apply}>Enroll</Button>
 
           {/* <div className="mx-20 py-8 px-12 rounded-md bg-blue-gray-100 mb-40">
             <div className="text-xl font-bold mb-4">

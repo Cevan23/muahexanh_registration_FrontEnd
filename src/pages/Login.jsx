@@ -41,6 +41,13 @@ const Login = () => {
         </h2>
       );
       return;
+    } else if (formData.role.length == 0) {
+      setWarning(
+        <h2 className="text-sm font-bold text-white bg-red-600 mb-4 p-2 rounded">
+          Please Choose Role
+        </h2>
+      );
+      return;
     }
 
     axios
@@ -61,6 +68,9 @@ const Login = () => {
           navigator("/student");
       })
       .catch((err) => {
+        setWarning(<h2 className="text-sm font-bold text-white bg-red-600 mb-4 p-2 rounded">
+          Wrong Password Or Email
+        </h2>)
         console.log(err);
       });
   }
