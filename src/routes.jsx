@@ -1,12 +1,11 @@
 import { Login, StudentHome, UniversityHome } from "./pages";
 import {
   Project,
-  ProjectDetail,
   PostProject,
   UpdateProject,
 } from "./pages/community-leader-pages";
 import Register from "./pages/Register";
-import { Profile } from "./components";
+import { Profile, ProjectDetail } from "./components";
 
 const publicRoutes = [
   { path: "/register", component: Register, layout: null },
