@@ -4,10 +4,12 @@ import axios from "~/api/axios";
 import { useParams } from "react-router-dom";
 import { mock_projectDetail } from "~/const";
 import images from "~/assets";
+import { useAuth } from "~/hooks";
 
 const StudentProjectDetail = () => {
   const { projectId } = useParams();
   const [projectDetail, setProjectDetail] = useState();
+  const { auth } = useAuth();
 
   useEffect(() => {
     axios
@@ -18,6 +20,22 @@ const StudentProjectDetail = () => {
       })
       .catch(() => setProjectDetail(mock_projectDetail));
   }, [projectId]);
+
+  const handleEnrollProject = (e) => {
+    axios
+      .post(`/api/students/applyProject`, {
+        projectId: projectId.toString(),
+        studentId: auth.id.toString(),
+      })
+      .then((res) => {
+        console.log(res.data);
+        window.location.reload();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <div>
       {projectDetail && (
@@ -42,6 +60,10 @@ const StudentProjectDetail = () => {
                   </h1>
                 </div>
               </div>
+
+              <Button onClick={(e) => handleEnrollProject(e)}>
+                Enroll Project
+              </Button>
             </div>
           </div>
           <div className="px-20 py-5">
