@@ -4,6 +4,7 @@ import { mock_projects } from "~/const";
 import images from "~/assets";
 import axios from "~/api/axios";
 import { useAuth } from "~/hooks";
+import Pagination from "~/components/ProjectCardItem/Pagination";
 const projectFilter = ["all_projects", "university_projects"];
 
 const Home = () => {
@@ -11,6 +12,11 @@ const Home = () => {
   const [selectedProject, setSelectedProject] = useState(projectFilter[0]);
   const { auth } = useAuth();
   console.log(auth);
+
+  //Pagination
+  const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postPerPage, setPostPerPage] = useState(5);
 
   useEffect(() => {
     if (selectedProject === "all_projects")
@@ -37,6 +43,12 @@ const Home = () => {
         });
     }
   }, [selectedProject]);
+
+  // Get current posts
+  const indexOfLastPost = currentPage * postPerPage
+  const indexOfFirstPost = indexOfLastPost - postPerPage
+  const currentPosts = projects.slice(indexOfFirstPost, indexOfLastPost)
+  const paginate = pageNumber => setCurrentPage(pageNumber);
 
   return (
     <div className="wrapper px-20 py-10 border-4">
@@ -66,6 +78,7 @@ const Home = () => {
             Search
           </button>
         </div>
+
       </form>
       <div className="flex mb-4 pl-6 border-cyan-100">
         <input
@@ -78,7 +91,7 @@ const Home = () => {
             setSelectedProject(projectFilter[0]);
           }}
           checked
-          // onClick={() => handleFilter(projectFilter[0])}
+        // onClick={() => handleFilter(projectFilter[0])}
         />
         <label
           htmlFor="all_projects"
@@ -96,7 +109,7 @@ const Home = () => {
           onChange={() => {
             setSelectedProject(projectFilter[1]);
           }}
-          // onClick={() => handleFilter(projectFilter[1])}
+        // onClick={() => handleFilter(projectFilter[1])}
         />
         <label
           htmlFor="university_projects"
@@ -108,7 +121,8 @@ const Home = () => {
 
       {/* load projects here */}
       <div className="relative overflow-x-auto sm:rounded-lg mt-5">
-        <ProjectItem activities={projects} />
+        <ProjectItem activities={currentPosts} />
+        <Pagination postsPerPage={postPerPage} totalPosts={projects.length} paginate={paginate}/>
       </div>
     </div>
   );

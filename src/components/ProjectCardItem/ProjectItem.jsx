@@ -4,13 +4,12 @@ import { Link } from "react-router-dom";
 const ProjectItem = ({ activities }) => {
   return (
     <div className="">
-      {activities &&
-        activities.map((activity) => (
+      {activities && activities.map((activity) => (
           <Link
             to={`project-detail/${activity.id}`}
             key={activity.id}
-            className="w-full my-5 grid grid-cols-10"
-          >
+            className="w-full my-5 grid grid-cols-10" >
+              
             <div className="col-span-2">
               <img src={images.muahexanh} className="w-full h-64 rounded-lg" />
             </div>
