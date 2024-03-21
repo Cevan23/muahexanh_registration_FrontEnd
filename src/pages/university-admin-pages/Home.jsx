@@ -31,10 +31,9 @@ const Home = () => {
         })
         .catch(() => {
           // Catch for test mock API
-          setProjects(mock_projects);
+          setProjects(mock_projects.data);
         });
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filter]);
 
@@ -112,7 +111,7 @@ const Home = () => {
       {/* load projects here */}
       <div className="relative overflow-x-auto sm:rounded-lg mt-5">
         <ProjectItem activities={currentPosts} />
-        <Pagination postsPerPage={postPerPage} totalPosts={projects.length} paginate={paginate}/>
+        <Pagination postsPerPage={postPerPage} totalPosts={projects.length} paginate={paginate} />
       </div>
     </div>
   );
