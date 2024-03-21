@@ -12,7 +12,7 @@ const StudentProjectDetail = () => {
   useEffect(() => {
     //Mai mot truyen student id zo so 1
     axios
-      .get(`/api/projects/getByLeaderIDAndProjectID/1/${projectId}`)
+      .get(`/api/projects/${projectId}`)
       .then((res) => setProjectDetail(res.data.data))
       .catch(() => setProjectDetail(mock_projectDetail));
   }, [projectId]);

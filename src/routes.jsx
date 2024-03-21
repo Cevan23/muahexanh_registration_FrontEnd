@@ -7,6 +7,7 @@ import {
 } from "./pages/community-leader-pages";
 import Register from "./pages/Register";
 import { Profile } from "./components";
+import StudentProjectDetail from "./pages/student-pages/StudentProjectDetail";
 
 const publicRoutes = [
   { path: "/register", component: Register, layout: null },
